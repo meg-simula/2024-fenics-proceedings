@@ -29,7 +29,7 @@ This study aims to implement a method to compute in vivo blood fluid dynamics on
 \label{sec:methods}
 
 \subsection*{Data Assimilation Method}
-The VarDA approach was formulated as an optimization problem constrained by the NS equations, using the dolfin-adjoint library for the adjoint problem. The process follows three steps: running a first numerical simulation with tentative inlet BCs (which we refer to as the \emph{forward model} or \emph{tape}), solving the optimization problem to identify inlet BCs, and running a final numerical simulation yielding the refined velocity and pressure fields (Fig. \ref{fig:scheme}).
+The VarDA approach was formulated as an optimization problem constrained by the NS equations, using the dolfin-adjoint library~\citep{Mitusch2019} for the adjoint problem. The process follows three steps: running a first numerical simulation with tentative inlet BCs (which we refer to as the \emph{forward model} or \emph{tape}), solving the optimization problem to identify inlet BCs, and running a final numerical simulation yielding the refined velocity and pressure fields (\Cref{fig:scheme}).
 
 \subsection*{Forward Problem Definition}
 The weak and discretized form of NS equations for an incompressible fluid \citep{Stokes2009} has been solved using the finite element platform FEniCS \citep{Alnaes2015} to compute the velocity field $\mathbf{u}$ over a domain $\Omega$, given an initial condition (IC) \(\mathbf{u}=\mathbf{u_0}\) on $\Omega$ at time $t_0$, a zero pressure condition at the outlet section $\Omega_N$, and a Dirichlet BC at the inlet section $\Omega_D$ in the form of a space- and time-dependent velocity profile $\mathbf{g}$. Through an in-house Python script, 2D and 3D fluid domains $\Omega$ were discretized into triangular and tetrahedral elements, respectively, with 1- to 1.5-mm characteristic sizes and linear and quadratic shape functions for nodal pressure and velocity, respectively. The semi-implicit Crank--Nicolson time integration scheme was applied with a time increment of $\Delta t = 0.001$ s. The incremental pressure correction scheme (IPCS) proposed in \citep{Goda1979} was implemented. A generalized minimal residual method was chosen as a linear solver, with tolerances of $1 \times 10^{-4}$ for momentum and continuity equations.
@@ -126,7 +126,7 @@ In high--Reynolds number tests, IPCS optimization reduced the RMSE from 142.60 m
 \subsubsection*{2DVar+t Benchmark}
 When a zero-velocity field was imposed as the IC, the post-optimization velocity field showed inconsistencies with respect to the observations.
 In particular, a high-velocity region just downstream of the inlet section was obtained, while low velocity values were computed in the rest of the domain.
-Moreover, these tests did not yield improvements from changing \(\alpha\), and increasing \(\beta\) further worsened the performance (Fig. \ref{fig:3.3}).
+Moreover, these tests did not yield improvements from changing \(\alpha\), and increasing \(\beta\) further worsened the performance (\Cref{fig:3.3}).
 
 \begin{figure}
     \centering
@@ -142,7 +142,7 @@ VarDA was performed with spatial regularization terms set to $\alpha = 10^{-2}$,
 
 
 \subsubsection*{AAA Benchmark}
-In first tests, \(RMSE\) improved from 59.3 mm/s to 55.1 mm/s, indicating better alignment with observations (Fig. \ref{fig:3.7a}). 
+In first tests, the RMSE improved from 59.3 mm/s to 55.1 mm/s, indicating better alignment with observations (\Cref{fig:3.7a}). 
 \begin{figure}
     \centering
     \begin{minipage}{\textwidth}
@@ -162,14 +162,15 @@ In first tests, \(RMSE\) improved from 59.3 mm/s to 55.1 mm/s, indicating better
     \label{fig:3.7}
 \end{figure}
 
-Generating a tape took about 25 minutes, while optimization required 17 hours with 80 Gb of memory. The WSS distributions from the tape's output and the 3DVar predictions were consistent, identifying regions with high shear stress (Fig. \ref{fig:3.7b}). WSS distributions from the tape's output and the 3DVar predictions were consistent in terms of the location of high-WSS regions. Moreover, while enforcing consistency with 4D flow-based velocity measurements, the 3DVar method yielded a regular and realistic WSS distribution. This is a major difference compared to the WSS distribution estimated directly from 4D flow data, which was unrealistic owing to their poor spatial resolution and the impact of noise in the near-wall region. In tests with noisy observations, 3DVar effectively reconstructed the velocity field, slightly reducing \(RMSE\) from 36.8 mm/s to 36.4 mm/s while maintaining WSS predictions consistent with CFD results, particularly at the iliac bifurcation, which is where the abdominal aorta splits into two smaller arteries, carrying blood to the pelvis and legs.
+Generating a tape took about 25 minutes, while optimization required 17 hours with 80 Gb of memory. The WSS distributions from the tape's output and the 3DVar predictions were consistent, identifying regions with high shear stress (\Cref{fig:3.7b}). WSS distributions from the tape's output and the 3DVar predictions were consistent in terms of the location of high-WSS regions. Moreover, while enforcing consistency with 4D flow-based velocity measurements, the 3DVar method yielded a regular and realistic WSS distribution. This is a major difference compared to the WSS distribution estimated directly from 4D flow data, which was unrealistic owing to their poor spatial resolution and the impact of noise in the near-wall region. In tests with noisy observations, 3DVar effectively reconstructed the velocity field, slightly reducing the RMSE from 36.8 mm/s to 36.4 mm/s while maintaining WSS predictions consistent with CFD results, particularly at the iliac bifurcation, which is where the abdominal aorta splits into two smaller arteries, carrying blood to the pelvis and legs.
 
 
 \section*{Discussion}
 
 \subsection*{From 2DVar+t to 3DVar}
 The 2DVar+t benchmark reveals challenges due to inertial effects and short simulation durations, causing reconstruction defects from incomplete flow development. Extending the simulation time for optimization is impractical due to high computational costs. A potential solution includes proper initialization of CFD simulations and implementing a checkpointing method to reduce computational costs by using only the last cardiac cycle for gradient calculations.
-Moreover, a key difference between the 2DVar+t and 3DVar benchmarks is the flow field's response to regularization. In the 2DVar+t case, increasing $\alpha$ has minimal effect due to dominant time-dependent effects, reducing the impact of spatial regularization. Additionally, increasing $\beta$ deteriorates the results, a challenge that does not arise in the 3DVar case, emphasizing the difficulty of balancing temporal and spatial regularization in dynamic flows. Conversely, in the 3DVar case, moderate $\alpha$ values ($10^{1}$) significantly improve the velocity field, reducing inlet peaks and lowering \(RMSE\). However, excessive regularization ($\alpha = 10^{3}$) causes unrealistic velocity patterns. 
+Moreover, a key difference between the 2DVar+t and 3DVar benchmarks is the flow field's response to regularization. In the 2DVar+t case, increasing $\alpha$ has minimal effect due to dominant time-dependent effects, reducing the impact of spatial regularization. Additionally, increasing $\beta$ deteriorates the results, a challenge that does not arise in the 3DVar case, emphasizing the difficulty of balancing temporal and spatial regularization in dynamic flows. Conversely, in the 3DVar case, moderate $\alpha$ values ($10^{1}$) significantly improve the velocity field, reducing inlet peaks and lowering the RMSE.
+However, excessive regularization ($\alpha = 10^{3}$) causes unrealistic velocity patterns. 
 
 \subsection*{AAA Benchmark}
 The AAA benchmark effectively reconstructs the velocity field in the AAA geometry, maintaining high consistency with data obtained from 4D flow
