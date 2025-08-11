@@ -6,7 +6,7 @@
   Electrolyte Models.}
 \titlerunning{Function Scaling and Adaptive Convergence Throttling}
 
-\author{D.~F.~Parsons, M.~Farci,  A.~Grigoras, and Dagmawi Tadesse}
+\author{Drew~F.~Parsons, Matteo~Farci,  Alin~Grigoras, and Dagmawi Tadesse}
 \authorrunning{Parsons et al.}
 
 \institute{D.~F.~Parsons \email{drew.parsons@unica.it}
@@ -14,37 +14,33 @@
   \at 
 Department of Chemical and Geological Sciences, University of Cagliari, Cagliari, Italy,
 \and Dagmawi Tadesse
-\at School of Mathematics, Statistics, Chemistry and Physics, Murdoch University, Murdoch, Australia
+\at School of Mathematics, Statistics, Chemistry and Physics, Murdoch University, Murdoch, WA, Australia
 }
 
 \maketitle
 
-\abstract{ The nonlinear Poisson--Boltzmann (PB) model of electrolyte
-  solutions combines the Poisson equation for electrostatic potentials
-  with a Boltzmann equilibrium of mobile ion concentrations. The
-  Boltzmann equation $c = c_0 \exp[-e\psi/kT]$ is highly
-  nonlinear once the electrostatic potential exceeds several thermal
-  energy ($kT$) units (i.e.\ when $\psi>0.1$ V). This introduces two
-  related numerical challenges: first, suitable convergence conditions
-  for the concentration functions become sensitive to the
-  boundary potential. Second, a controlled initial guess must be
-  provided to avoid the finite element method calculation diverging to
-  NaN. We resolve the first challenge by logarithmically scaling the
-  concentration function, as suggested by the exponential nature of
-  the Boltzmann equation.  We find a nontrivial complex logarithmic
-  form (log-zero scaling) is required to allow for the near-zero concentrations
-  of coions in a classical point charge model. However, a better model is obtained by
-  allowing for other non-electrostatic molecular interactions, 
-  particularly steric forces due to finite ion sizes. The second challenge is resolved  with an adaptive
-  throttling algorithm that throttles large values of
-  boundary conditions down to the level of the linear regime and then 
-  raises the throttle and applies the throttled solution as an initial guess until the
-  final nonlinear solution is iteratively  obtained.
-The combination of a steric model and throttling enables
-  computation of concentrated electrolytes with electrode potentials
-  as high as 2,000 V. We provide a general derivation of the weak and
-  strong forms of the modified PB system from the
-  underlying thermodynamic energy functional.} 
+\abstract{The Poisson--Boltzmann (PB) model of electrolyte solutions
+combines the Poisson equation for electrostatic potentials with a
+Boltzmann equation $c = c_0 \exp[-e\psi/kT]$ for mobile ion
+concentrations that is highly nonlinear once the electrostatic
+potential exceeds 0.1 V. This introduces numerical
+challenges: first, suitable convergence conditions for the
+concentration functions become sensitive to the boundary
+potential. Second, a controlled initial guess must be provided to
+avoid the finite element method calculation diverging to NaN. We
+resolve the first challenge by logarithmically scaling the
+concentration function.  A nontrivial log-zero scaling function can handle
+the near-zero concentrations of coions in a classical point charge
+model, though is redundant in an advanced model that includes steric
+forces due to finite ion sizes.  The second challenge is resolved with
+an adaptive throttling algorithm that throttles large values of
+boundary conditions down to the level of the linear regime and then
+iteratively raises the throttle until the final nonlinear solution is
+obtained.
+The combination of a steric model and throttling enables computation of
+concentrated electrolytes with electrode potentials as high as 2,000
+V. We provide a general derivation of the weak and strong forms of the
+ PB system from the underlying thermodynamic energy functional. } 
 
 \section*{Introduction}
 
@@ -60,7 +56,7 @@ supercapacitors. However, there is a crucial difference in the two classes
 of applications that has a significant impact on the numerical
 stability of the model.  The surface potentials
 of typical microparticles, such as protein molecules or metal oxide
-particles, tends to lie in the range 5--50 mV, which is 0.2--2
+particles, tend to lie in the range 5--50 mV, which is 0.2--2
 $kT$ in thermal energy units (based on a thermal potential at $T=298$
 K defined by $e\psi_{T} = kT$, where $e$ is the elementary charge, $k$
 is Boltzmann's constant, and $T$ is temperature). Electrolytic energy
@@ -119,14 +115,14 @@ where $c_{i\infty}$ is the bulk concentration of ions. As a point of
 physics, it is important to note that the use of a fixed bulk
 concentration means the system is controlled by the chemical potential
 of ions, with a variable number of ions in the domain $V$ of interest.
-in other words, the thermodynamic potential is a grand potential, not 
+In other words, the thermodynamic potential is a grand potential, not 
 (Helmholtz) free energy, and for that reason we write the energy as $\Omega$ rather
 than $F$. A free energy formulation (with a fixed number of ions) would
 require the use of a thermal de Broglie wavelength instead of
 $c_{i\infty}$ \citep{GrayStiles2018}.
 
 
-The term $\Omega_{el} + \Omega_{en}$ alone constructs the conventional
+The grand potential term $\Omega_{el} + \Omega_{en}$ defines the conventional
 PB model. The term $\Omega_{ex}$ represents extra
 contributions to the total energy functional that describe other
 relevant physics, such as pH-dependent charge regulation
@@ -161,8 +157,7 @@ displacement vector $D$ at the boundary, or, equivalently, $n$ is the
 outward normal vector at the boundary. Here, \eqref{surface_charge_gauss}
 is valid across the entire  external surface $S$ but sets a Neumann
 boundary condition when applied to the surface subdomain
-$S_{N}$ in \eqref{weak_Poisson}. Applied at $S_{D}$, it provides an
-evaluation of the surface charge density generated at Dirichlet surfaces.
+$S_{N}$ in \eqref{weak_Poisson}. Applied at $S_{D}$, \eqref{surface_charge_gauss} evaluates the surface charge density generated at Dirichlet surfaces.
 After additional
 integration by parts, the weak formulation \eqref{weak_Poisson} leads to the strong
 formulation of the electrostatic Poisson equation,
@@ -193,7 +188,7 @@ electrostatic potential with the Boltzmann equation in closed form,
 such that
 only the Poisson equation would need to be solved directly. However, the
 physical problem with the classical model is evident in electrochemical
-systems with electrode potential 1 V. A 1 V potential is
+systems with an electrode potential of 1 V. A 1 V potential is
 equivalent to a thermal energy of $40 kT$ (at room temperature), for which the conventional
 Boltzmann factor for a counterion is
 $\exp(40)\approx 2.3 \times 10^{17}$.  That is, the surface counterion
@@ -218,7 +213,7 @@ defined by
 where $\mu_{i\infty}$ refers to the (fixed) excess chemical potential of the
 ion in bulk solution, defined relative to an ideal unit
 reference solution by $\mu_{i\infty} = kT\ln c_{i\infty} + \mu_{i\infty}^{ex}$.
-The steric model we employ is the Carnahan--Starling (CS, 1969) model
+The steric model we employ is the Carnahan--Starling \citetext{CS, \citeyear{CarnahanStarling1969}} model,
  with a contribution to the grand potential
 % for future reference, the CS model (both energy and chemical
 % potential)  can be considered as Padé approximations
@@ -250,7 +245,9 @@ functional \eqref{CS_energy_functional}, is
 where $\phi$ is the \emph{total} ion volume fraction defined by
 $\phi=\sum_i c_i v_i$, with $v_i$ the intrinsic molar volume per
 ion $i$. Hence the CS excess chemical potential is defined identically
-for all ions. To derive the weak formulation in \eqref{weak_CS}, we
+for all ions. 
+
+To derive the weak formulation in \eqref{weak_CS}, we
 applied a homogenized component approximation that assigns common
 volumes at the point of introducing the variation  $\delta c_i$ (i.e.\
 the test function $b_i$), such that $\delta\phi=v_j \delta c_i$ rather 
@@ -283,7 +280,7 @@ equation in terms of
 concentration, \eqref{general_Boltzmann}, is then simply a rearrangement of
 the strong equation for chemical potential. Chemists are in the
 habit of using the Boltzmann equation in the concentration form rather
-than the chemical potential. In practice, our implementation in code applies the weak
+than the chemical potential. Our implementation in code therefore applies the weak
 form of the Boltzmann equation via concentrations, as
 \begin{equation}
 0 =   \int_V \left[ c_i(x) - c_{i\infty}
@@ -294,7 +291,7 @@ dx
 \end{equation}
 for all test functions $b_i$, rather than applying it via the chemical
 potential components in \eqref{weak_Boltzmann}
-+  \eqref{weak_CS}. Because the concentration functions $c_i(x)$ being
+and  \eqref{weak_CS}. Because the concentration functions $c_i(x)$ being
 solved are the same, this change in the weak form should not affect
 residuals.  These alternative weak forms for the Boltzmann
 equation may affect efficiency, perhaps by changing the condition number
@@ -335,9 +332,9 @@ The Debye length (electrostatic screening length) of the electrolyte
 provides a natural reference for the units of $L$. The Debye length is
 the  decay length of the exponential decaying profile of the potential $\psi(x)$
 found far from the electrode, where its magnitude has fallen below 25
-mV. The distance to the zero potential (bulk solution) may be taken as
+mV. The distance to zero potential (bulk solution) may be taken as
 $L=10$ -- 30 Debye lengths, depending on one's tolerance for
-'zero'. The Debye length itself could be taken as the length unit
+`zero'. The Debye length itself could be taken as the length unit
 for $L$, but typical Debye lengths lie in the nanoscale, ranging from 0.5 nm for
 seawater (0.5M salt) to 1,000 nm for pure water (due to {H}$^{+}$ and
 {OH}$^{-}$ from dissociated water). We use nanometres as the units for $L$ to facilitate
@@ -375,7 +372,7 @@ potentials higher than 0.1 V.
 
 In our implementation, we have adopted nanometres for the length scale of the
 mesh ($x$). The physical units for real electrostatic potentials
-$\psi(x)$ and concentration functions  $c_{i}(x)$, are volts and moles
+$\psi(x)$ and concentration functions  $c_{i}(x)$, are volts and M
 (mol/L), respectively. However, in computations we used units for the
 potential and concentration functions scaled to unity, as described next.
 
@@ -390,7 +387,7 @@ large in the conventional point charge model due to nonlinear
 exponentiation of  electrostatic potentials exceeding 0.1--0.2 V in
 the Boltzmann equation. Trivial scaling can be introduced by solving
 the concentration function scaled against the bulk concentration, but
- nonlinear catastrophe is reached
+ thenonlinear catastrophe is reached
 numerically above 0.5 V. At 0.6 V, the conventional
 calculation with simple scaling is already unable to reduce the residual below
 the required convergence criterion  $10^{-5}$. While it would be possible to relax the
@@ -453,8 +450,7 @@ exceeding 1 V. Nevertheless, Fig.~\ref{fig_classical_PB}(b) demonstrates the
 point charge catastrophe of the conventional model with counterion
 concentrations exceeding $10^{5}$ mol/L at the electrode
 surface. Moreover, for general electrochemical applications, solutions for electrode
-potentials higher than 1.5V would
-be desirable. To address the physical problem, we
+potentials higher than 1.5V are required. To address the physical problem, we
 introduce finite ion sizes with a steric force provided by the
 Carnahan--Starling model, \eqref{chem_pot_CS} (with weak form
 \eqref{weak_CS}).  We apply ion volumes
@@ -604,8 +600,8 @@ $r>$hct, but the limit of one is simpler, avoiding the need to
 compare against the hct. Fitting against the best $r$ values for trivial scaling
 results in $A=3.78 \pm 0.36$ and $B=0.102 \pm 0.020 \textrm{ V}^{-1}$.
 The uncertainties here have been determined from the covariance matrix
-generating by the fitting procedure implemented in the
-\verb|curve_fit| function provided by the optimization module in SciPy
+generated by the fitting procedure implemented in the
+\verb|curve_fit| function provided by the \texttt{optimize} module in SciPy
 \citep{VugrinSwilerRobertsStuckyMackSullivan2007}. 
  The best $r$ value for log-zero scaling is similar. One could separately fit
  parameters for log-zero scaling (to obtain 
@@ -619,14 +615,14 @@ We emphasize that the value of $V$ used in the adaptive $r$ formula, \eqref{adap
 must be the target boundary condition (the final electrode voltage),
 and not the throttled boundary condition at the given iteration.  If a throttled $V$ were
 applied, $r$ would be small when the boundary condition is strongly
-throttled, resulting in large rise steps that cause convergence
+throttled, resulting in large rise steps that lead to convergence
 failure when the  target voltage is large.
 
 
 Table~\ref{tab:convergence} shows  the number of iterations required
 to converge with various boundary conditions for the different
 concentration scaling functions in both the point charge model and the
-steric model and applying the adaptive
+steric model and applying an adaptive
 $r(V)=1+3.78\ln(1+0.102V)$ for 1D meshes with 30 cells. For the point charge model, trivial scaling 
 permits calculations only up to 0.7 V. Log scaling permits calculations up to 0.8 V, and log-zero
 scaling permits calculations up to 1 V (1.5 V can be reached with a finer mesh).
@@ -688,15 +684,15 @@ performance plot of iterations versus voltage for the steric model
  The steric model
 naturally keeps concentrations within 
 physically reasonable bounds, such that  log-zero scaling is not
-required for normal electrochemical conditions. In fact,
-trivial scaling performs better than log-zero scaling when $V<100$ V,
+required for normal electrochemical conditions. 
+Trivial scaling performs better than log-zero scaling when $V<100$ V,
 the region of electrochemical interest.
 Performance is robust with respect to the $A$ and $B$ parameters used to
 determined $r(V)$, whether fitted to the best $r$ for trivial or log-zero scaling.
 2D and 3D calculations generally require the same number of iterations
 as 1D calculations, showing small differences only at 1--2 V.
 Even with log-zero scaling, computation of the interaction of
-100-kV electrical transmission cables with saline water would require
+100 kV electrical transmission cables with saline water would require
 such a large number of iterations that this algorithm would become impractical.
 
 \begin{figure}
@@ -774,7 +770,7 @@ the electrolyte concentration or whether the geometry is 1D, 2D, or 3D.
 This might indicate a deeper structure in the algorithm that could be
 revealed with further mathematical analysis. Our 1D, 2D, and 3D
 simulations tested the same flat electrode surface. We expect the optimal throttling
-conditions will continue to be applied with more complex 3D or 2D
+conditions will continue to be valid with more complex 3D or 2D
 geometries, though it may be prudent to confirm this assumption.
 
 We illustrated the throttling algorithm using Dirichlet boundary
