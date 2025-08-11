@@ -171,7 +171,7 @@ are finite element basis functions.
 
 The generated kernel calculates a double-precision vector $v_i \in
 \mathbb{R}^{n}$, where $n = 4$ for first-order (low-order) discretization and
-$n = 165$ for eighth-order discretization (high-order) discretization. Low-order kernels are
+$n = 165$ for eighth-order (high-order) discretization. Low-order kernels are
 expected to be memory bandwidth limited, while high-order kernels have higher
 arithmetic intensity. In addition, the matrix-free (operator action) version
 requires fewer load and store operations in comparison to the assembly of a
