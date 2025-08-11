@@ -9,7 +9,9 @@
 \author{M.~Habera and J.~S.~Hale}
 \authorrunning{Habera and Hale}
 
-\institute{M.~Habera \email{michal.habera@rafinex.com} \at Rafinex SARL, Luxembourg, and Institute of Computational Engineering, Department of Engineering, Faculty of Science, Technology and Medicine, University of Luxembourg, Luxembourg\\
+\setcitestyle{aysep={}}
+
+\institute{M.~Habera \email{michal.habera@rafinex.com} \at Rafinex SARL, and Institute of Computational Engineering, Department of Engineering, Faculty of Science, Technology and Medicine, University of Luxembourg\\
 J.~S.~Hale \email{jack.hale@uni.lu} \at Institute of Computational Engineering, Department of Engineering, Faculty of Science, Technology and Medicine, University of Luxembourg, Luxembourg}
 
 \maketitle
@@ -21,19 +23,19 @@ suitability of ARM-based cloud computing instances in executing finite element
 computations. Specifically, we present performance results for running the FEniCS
 Project finite element software on Amazon Web Services (AWS) c7g and c7gn
 instances with Graviton3 processors. These processors support the ARMv8.4-A
-instruction set with Scalable Vector Extension (SVE) modules for Single Instruction
+instruction set with Scalable Vector Extension (SVE) for Single Instruction
 Multiple Data operations and the Elastic Fabric Adaptor for communications
 between instances. Both clang 18 and GNU Compiler Collection 13 compilers successfully generated
 optimized code using SVE instructions, ensuring that users can achieve
 optimized performance without extensive manual tuning. Testing a distributed
-memory parallel DOLFINx Poisson solver with up to 512 message passing interface
+memory parallel DOLFINx Poisson solver with up to 512 Message Passing Interface
 processes, we find that the performance and scalability of the AWS instances
 are comparable to those of a dedicated AMD EPYC Rome cluster installed at the University
 of Luxembourg. These findings demonstrate that ARM-based cloud computing
 instances, exemplified by AWS Graviton3, can be competitive for distributed
 memory parallel finite element analysis.}
 
-\section*{Introduction}
+\section{Introduction}
 
 The FEniCS Project~\citep{alnaes2015fenics,baratta_dolfinx_2023} has been used
 to write finite element solvers for problems in fields that involve solving partial differential equations, including mathematics,
@@ -47,7 +49,7 @@ Examples of ARM adoption in the high-performance computing (HPC) space include t
 (Isambard 3, NVIDIA Grace, \citep{isambard}), the Mont-Blanc project (Phase 3,
 Cavium Thunder X2, \citep{Rajovic2016}), the Fugaku supercomputer (Fujitsu A64FX,
 \citep{fugaku}), and the Astra supercomputer (Cavium ThunderX2, \citep{astra}). Publicly available cloud services with ARM instances include those of Amazon Web
-Services, or AWS (Graviton3 CPU based on Neoverse V1 and Graviton4 CPU with
+Services AWS (Graviton3 CPU based on Neoverse V1 and Graviton4 CPU with
 Neoverse V2), Google Cloud (Axion CPU based on Neoverse V2,
 \citep{google_arm_compute}), and Microsoft Azure (Azure Cobalt 100 based on
 Neoverse N2, \citep{microsoft_azure}).
@@ -67,8 +69,9 @@ Compiler (FFCx)~\citep{kirby_compiler_2006} then compiles the UFL description of
 problem into a low-level C kernel for computing the cell-local finite element
 tensor.
 
-One advantage of a compute-bound kernel is that it ensures that the
-assembly code of the compiled kernel contains calls to SIMD operations. SIMD operations can apply the same operation
+One aspect of good performance of a compute-bound kernel is ensuring the
+assembly code of the compiled kernel contains calls to Single Instruction
+Multiple Data (SIMD) operations. SIMD operations can apply the same operation
 to multiple data items in a single CPU clock cycle. For a recent overview of
 SIMD programming strategies, see, for example, \cite{rocke_evaluation_2023}. The current
 strategy of FFCx with respect to SIMD is to ensure that its kernels are
@@ -83,8 +86,8 @@ element kernels and that these kernels display reasonable runtime performance.
 
 In addition to SIMD parallelization at the kernel level, DOLFINx, the FEniCS Project's finite
 element problem solving environment, also supports
-the distributed memory parallel assembly of global finite element data structures
-(sparse matrices and vectors) using the message passing interface (MPI; for
+distributed memory parallel assembly of global finite element data structures
+(sparse matrices and vectors) using the Message Passing Interface (MPI; for
 full details, see \cite{baratta_dolfinx_2023}). Users running large-scale
 DOLFINx simulations on AWS must verify that the EFA interconnect's performance is sufficient for parallel scalability.
 
@@ -92,9 +95,9 @@ In summary, the contribution of this chapter is to examine both the SIMD
 performance and multi-node parallel scaling of the FEniCS Project's software on
 Amazon's Graviton3-based instances. 
 
-\section*{Methodology and Results}
+\section{Methodology and Results}
 
-\subsection*{Systems}
+\subsection{Systems}
 AWS c7g and c7gn instances are compared to the Aion computing instances available
 at the University of Luxembourg's HPC facilities \citep{VCPKVO_HPCCT22}. These
 instances have different hardware configurations (see
@@ -110,7 +113,7 @@ structures and computationally intensive algorithms written in C and C++.
                               & Aion node                                                          & AWS c7g instance \\ \hline \hline
     Processor                 & \makecell[l]{2 x (AMD EPYC ROME 7H12, \\ 64 cores @ 2.6 GHz)}      & \makecell[l]{1 x (Graviton3, \\ 64 cores @ 2.6 GHz)} \\ \hline
     Architecture              & x86\_64, Zen 2 (AVX2)                                              & ARMv8.4-A, Neoverse V1 (SVE) \\ \hline
-    Memory                    & \makecell[l]{256 GB DDR4 \\ 3200 MT/s = 25.6 GB/s \\ 8 non-uniform memory access (NUMA) nodes} & \makecell[l]{128 GB DDR5 \\ 4800 MT/s = 38.4 GB/s  \\ Unified memory access (no NUMA) } \\ \hline
+    Memory                    & \makecell[l]{256 GB DDR4 \\ 3200 MT/s = 25.6 GB/s \\ 8 non-uniform memory access (NUMA) nodes} & \makecell[l]{128 GB DDR5 \\ 4800 MT/s = 38.4 GB/s  \\ Uniform memory access (no NUMA) } \\ \hline
     Total mem. bandwidth      & 2 x 200 GB/s                                                       & 1 x 300 GB/s  \\ \hline
   \end{tabular}
   \vspace{5pt}
@@ -122,7 +125,7 @@ structures and computationally intensive algorithms written in C and C++.
   \label{tab:aion-aws-config}
 \end{table}
 
-\subsection*{Memory Bandwidth}
+\subsection{Memory Bandwidth}
 
 Low-order finite element methods are typically memory bandwidth constrained, since 
 the time to load and store data from main memory (e.g. the mesh geometry)
@@ -133,12 +136,12 @@ STREAM \citep{McCalpin1995,McCalpin2007} is the industry standard benchmark for
 measuring sustained memory bandwidth performance, with McCalpin estimating memory bandwidth
 from memory-intense operations (copy, scale, add) on large contiguous arrays.
 
-\autoref{fig:stream-single} shows the results for the copy operation for a single-node
-benchmark. For the single-node benchmark, $\SI{80}{\percent}$ of the
+Figure \ref{fig:stream-single} shows the results for the copy operation for a single-node
+benchmark. For the single-node benchmark, $80 \%$ of the
 theoretical peak memory bandwidth of $\SI{400}{\giga\byte\per\second}$ for Aion
 and $\SI{300}{\giga\byte\per\second}$ for AWS c7g is reached. This is considered
 a reasonable outcome of the STREAM benchmark \citep{McCalpin2023}. Bandwidth
-saturation is observed at around $\SI{20}{\percent}$ of the node utilization.
+saturation is observed at around $20 \%$ of the node utilization.
 Both curves show different saturation point characteristics due to
 different memory access configurations. On the Aion instances, there are eight NUMA nodes of 16 cores each, while AWS c7g instances
 are set up with unified memory access.
@@ -151,7 +154,7 @@ are set up with unified memory access.
         \label{fig:stream-single}
 \end{figure}
 
-\subsection*{Finite Element Kernels}
+\subsection{Finite Element Kernels}
 
 To measure the performance of standard FEniCS user finite element
 code, we use the Local Finite Element Operator Benchmarks repository
@@ -170,7 +173,7 @@ are finite element basis functions.
 
 The generated kernel calculates a double-precision vector $v_i \in
 \mathbb{R}^{n}$, where $n = 4$ for first-order (low-order) discretization and
-$n = 165$ for eighth-order (high-order) discretization. Low-order kernels are
+$n = 165$ for eighth-order discretization (high-order) discretization. Low-order kernels are
 expected to be memory bandwidth limited, while high-order kernels have higher
 arithmetic intensity. In addition, the matrix-free (operator action) version
 requires fewer load and store operations in comparison to the assembly of a
@@ -178,11 +181,11 @@ matrix, increasing the ratio of floating-point operations to memory loads and
 stores. Consequently, significant performance improvements are possible for high-order kernels if the compiler can automatically emit SIMD
 operations.
 
-\subsubsection*{Generated Code Structure}
+\subsubsection{Generated Code Structure}
 
 Compiler (loop) SIMD auto-vectorization is usually performed for innermost
 loops with known compile time bounds. Analysis of the FFCx autogenerated code
-is required to understand the potential and missed optimizations.
+is required to understand the potential and determine missed optimizations.
 
 \lstset{style=CStyle}
 \begin{lstlisting}[language=c,
@@ -226,12 +229,12 @@ quadrature point, which would increase the arithmetic intensity and yield more
 opportunities for vectorization.
 
 The most performance-critical part of the code is contained in the quadrature
-loop body. For the eighth-order Laplace operator, \lstinline{NUM_QUAD_POINTS = 214} and \lstinline{NUM_DOFS = 165}. There are two
+loop body. For the eight order Laplace operator, \lstinline{NUM_QUAD_POINTS = 214} and \lstinline{NUM_DOFS = 165}. There are two
 innermost loops: coefficient evaluation and tensor assignment. Both contain a
 set of multiply--add operations that are candidates for automatic vectorization
 via fused multiply--add operations in both the SVE (Graviton3) and AVX2 (AMD EPYC) cases.
 
-\subsubsection*{Experimental Results}
+\subsubsection{Experimental Results}
 
 For the finite element kernel benchmarks, we compile the kernels with
 LLVM/clang 18.1.3 and GNU Compiler Collection (GCC) 13.2.0. Full details are provided in
@@ -255,16 +258,17 @@ LLVM/clang 18.1.3 and GNU Compiler Collection (GCC) 13.2.0. Full details are pro
     \label{tab:compilers-kernels}
 \end{table}
 
-The kernel benchmark results are presented in \autoref{fig:local-deg1}
-and \autoref{fig:local-deg8}. Low-order kernels (\autoref{fig:local-deg1}) show no
+The kernel benchmark results are presented in Figs. \ref{fig:local-deg1}
+and \ref{fig:local-deg8}. Low-order kernels (Fig. \ref{fig:local-deg1}) show no
 dependence on the compiler vectorization setup. On the other hand, AWS c7g demonstrates a
-1.3x speedup over Aion, which we attribute to greater memory bandwidth for single processes.
+$1.3\times$ speedup over Aion, which we attribute to greater memory bandwidth for  a
+single process.
 
-High-order kernels (\autoref{fig:local-deg8}), which are expected to benefit from
+High-order kernels (Fig. \ref{fig:local-deg8}), which are expected to benefit from
 SIMD operations, reveal a clear link between compiler settings and performance.
 Both clang and GCC auto-vectorizers perform well, producing a noticeable
-speedup (\textgreater 2x) in the most optimized setting. The vectorization
-speedup (\textgreater 4x) is more significant with the Aion nodes.
+speedup (\textgreater $2\times$) in the most optimized setting. The vectorization
+speedup (\textgreater $4\times$) is more significant with the Aion nodes.
 
 \begin{figure}
     \begin{subfigure}{.5\textwidth}
@@ -311,9 +315,9 @@ fused multiply--add (FMLA) instructions
 \citep{ArmReferenceManual} for both the coefficient evaluation and tensor
 assignment loops \citep{GodboltArmClang,GodboltArmGCC}. FMLA is a SIMD instruction that multiplies two vectors stored in
 SVE registers and adds the result to a third vector. The coefficient evaluation
-loop with no interdependencies between iterations is a perfect example for
+loop with no interdependencies between iterations is a perfect example of
 compiler auto-vectorization. Moreover, for higher-order
-discretization coefficients, there is potential for exploiting wider SVE registers (up to 2,048 bits).
+discretization, there is potential for exploiting wider SVE registers (up to 2,048 bits).
 
 An assembly excerpt for the coefficient evaluation is shown below.
 \begin{lstlisting}[
@@ -336,7 +340,7 @@ assignment loops and rely on the \lstinline{VFMADD231PD} instructions on the
 YMM registers, that is, the vectorization width of four doubles
 \citep{Godboltx86Clang,Godboltx86GCC}.
 
-\subsection*{Parallel Scalability}
+\subsection{Parallel Scalability}
 
 The parallel scalability results were obtained using performance test codes
 for FEniCSx \citep{Wells2023} built against DOLFINx 0.6.0 and PETSc 3.18
@@ -355,17 +359,17 @@ The Poisson equation solver benchmark consists of the following measured steps:
     \item Assemble the matrix. Execute the local Poisson equation kernel over the
     mesh and assemble into a PETSc MATMPIAIJ (distributed compressed sparse row)
     matrix.
-    \item Solve the linear system. Run the conjugate gradient solver with a classical algebraic
+    \item Solve the linear system. Run the Conjugate Gradient solver with a classical algebraic
     multigrid (BoomerAMG; see \citep{hypre}) preconditioner.
 \end{enumerate}
 Creating the mesh (including partitioning), assembling matrices, and solving the
 resulting linear system are typically the most expensive steps in a finite
-element solve. They also contain significant parallel communication steps that
+element solution. They also contain significant parallel communication steps that
 can highlight issues in either the finite element solver or the underlying MPI
 hardware/software stack, leading to poor parallel scaling. 
 %
 Weak scaling results (with a constant workload of approximately \SI{5e+5} degrees of freedom
-per process) are shown in \autoref{fig:weak-scaling}. Both Aion and AWS c7gn
+per process) are shown in Fig. \ref{fig:weak-scaling}. Both Aion and AWS c7gn
 show almost constant times for mesh creation ($< 5\%$ difference).
 
 Matrix assembly is expected to have ideal weak parallel scalability due to the
@@ -375,7 +379,7 @@ in time (10--15\%) for 512 processes.
 
 The time for the solving step increases by 40\% for 512 processes on AWS c7gn and
 by 27\% on Aion. However, the number of Krylov iterations of the preconditioned
-conjugate gradient solver grows from 16 to 20 for 512 processes (a 25\% increase) due to the
+Conjugate Gradient solver grows from 16 to 20 for 512 processes (a 25\% increase) due to the
 inefficiency of the algebraic multigrid preconditioner on an unstructured 3D
 mesh. Taking this into account, the time per iteration is almost constant on
 Aion ($< 5\%$), and a small increase of 15\% on AWS c7gn is observed.
@@ -400,7 +404,7 @@ Aion ($< 5\%$), and a small increase of 15\% on AWS c7gn is observed.
     \label{fig:weak-scaling}
 \end{figure}
 
-\section*{Conclusions}
+\section{Conclusions}
 
 Benchmarks for the memory bandwidth, local finite element kernels, and parallel
 scalability of a Poisson solver were executed on Aion nodes and on AWS c7g(n)
@@ -442,11 +446,11 @@ This project received computing resources from Amazon Web Services (AWS)
 through the first and second collaborative University of Luxembourg and
 AWS Graviton3 calls. The experiments presented in this paper were
 carried out using the HPC facilities of the University of Luxembourg
-~(\cite{VCPKVO_HPCCT22}; see \url{https://hpc.uni.lu}.
+~\citep{VCPKVO_HPCCT22}; see \url{https://hpc.uni.lu}.
 
-This research was funded in whole or in part by the National Research
-Fund, grant reference COAT/17205623. For the purpose of open
-access and in fulfilment of the obligations arising from the grant
+This research was funded in whole or in part, by the National Research
+Fund (FNR), grant reference COAT/17205623. For the purpose of open
+access, and in fulfilment of the obligations arising from the grant
 agreement, the author has applied a Creative Commons Attribution 4.0
 International (CC BY 4.0) license to any Author Accepted Manuscript
 version arising from this submission.
