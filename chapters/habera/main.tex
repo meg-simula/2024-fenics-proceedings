@@ -227,7 +227,7 @@ quadrature point, which would increase the arithmetic intensity and yield more
 opportunities for vectorization.
 
 The most performance-critical part of the code is contained in the quadrature
-loop body. For the eight order Laplace operator, \lstinline{NUM_QUAD_POINTS = 214} and \lstinline{NUM_DOFS = 165}. There are two
+loop body. For the eighth-order Laplace operator, \lstinline{NUM_QUAD_POINTS = 214} and \lstinline{NUM_DOFS = 165}. There are two
 innermost loops: coefficient evaluation and tensor assignment. Both contain a
 set of multiply--add operations that are candidates for automatic vectorization
 via fused multiply--add operations in both the SVE (Graviton3) and AVX2 (AMD EPYC) cases.
