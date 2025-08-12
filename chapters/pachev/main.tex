@@ -49,7 +49,10 @@ The cuDOLFINx package extends the work of \cite{trotter2023targeting}. In additi
 
 There are three main cuDOLFINX software components.
 The first is a set of C++ classes containing the CUDA data structures needed for assembly.
-These classes correspond to their DOLFINx counterparts ) and are responsible for copying the required data to the GPU. The second consists of C++ classes that manage the generation, runtime compilation, and launching of CUDA assembly kernels. The final component contains the Python bindings for the C++ core. Most users will only need to utilize the Python wrapper, which provides Python versions of the C++ CUDA data structure classes, as well as convenience routines for performing assembly operations. We demonstrate the Python wrapper’s usage in the following section.
+These classes correspond to their DOLFINx counterparts and are responsible for copying the required data to the GPU.
+The second consists of C++ classes that manage the generation, runtime compilation, and launching of CUDA assembly kernels.
+The final component contains the Python bindings for the C++ core. Most users will only need to utilize the Python wrapper, which provides Python versions of the C++ CUDA data structure classes, as well as convenience routines for performing assembly operations.
+We demonstrate the Python wrapper's usage in the following section.
 \section{Sample Usage}
 
 Using cuDOLFINx within
@@ -82,7 +85,9 @@ The assembled matrix and vector are provided in the form of \pythoninline{CUDAMa
 
 Offloading matrix or vector assembly to a GPU typically results in faster assembly but it also incurs overhead due to copying necessary data structures to the device, as well as the runtime compilation of CUDA assembly kernels. For large enough problems, the overhead is small compared to the assembly itself. Moreover, the overhead is incurred only once per form and is therefore negligible for applications that require repeated assembly operations. Such use cases are very common and include time-dependent or nonlinear problems.
 
-Below, we show how a simplified FEniCSx code for Newton iteration might be modified to support GPU acceleration. Boundary conditions are excluded for brevity; however, complete working examples with boundary conditions are available in the cuDOLFINX source code \citep{cudolfinxzenodo}. Our example equation is a nonlinear version of Poisson's equation with an extra cubic term in $u$. We begin by initializing the PETSc data structures needed for assembly and linear algebra.
+Below, we show how a simplified FEniCSx code for Newton iteration might be modified to support GPU acceleration.
+Boundary conditions are excluded for brevity; however, complete working examples with boundary conditions are available in the cuDOLFINX source code \citep{cudolfinxzenodo}. Our example equation is a nonlinear version of Poisson's equation with an extra cubic term in $u$.
+We begin by initializing the PETSc data structures needed for assembly and linear algebra.
 \begin{python}
 from petsc4py import PETSc
 use_cuda = True
@@ -146,12 +151,19 @@ A final step remains within the loop. The updated solution needs to be copied ba
 We will everal representative use cases in which GPU acceleration can significantly enhance FEniCSx performance.
 \section
 {Performance Evaluation}
-We begin with two examples of the performance of the GPU assembly kernels in cuDOLFINx and then present a use case of complete GPU offloading for both assembly and linear solves. All computations in the following experiments are performed in double precision. The primary hardware used in the following experiments is an NVIDIA GH200 Superchip, which consists of a Hopper GPU with 132 streaming multiprocessors connected to a 72-core Grace CPU. The Hopper GPU has a memory bandwidth of 4 TB/s, while the CPU has a memory bandwidth of 384 GB/s~\citep{gh200specs}. Experiments were conducted using the Vista system at the Texas Advanced Computing Center.
-\subsection
-{Poisson Equation}
+We begin with two examples of the performance of the GPU assembly kernels in cuDOLFINx and then present a use case of complete GPU offloading for both assembly and linear solves.
+All computations in the following experiments are performed in double precision.
+The primary hardware used in the following experiments is an NVIDIA GH200 Superchip, which consists of a Hopper GPU with 132 streaming multiprocessors connected to a 72-core Grace CPU.
+The Hopper GPU has a memory bandwidth of 4 TB/s, while the CPU has a memory bandwidth of 384 GB/s~\citep{gh200specs}.
+Experiments were conducted using the Vista system at the Texas Advanced Computing Center.
+\subsection{Poisson Equation}
 We now consider the problem of assembling a stiffness matrix for the solution of the Poisson equation on the unit cube. We use linear Lagrange finite elements on four different uniform tetrahedral meshes ranging in size from about 1.3 million to 16.5 million elements.  For each mesh, Table~\ref{tab:poisson_results} reports the throughput in millions of degrees of freedom (DOFs) per second (MDOF/s) for assembling the stiffness matrix with cuDOLFINx on a Hopper GPU and with DOLFINx on a Grace CPU.
 
- The GPU does not appear fully saturated for the first two meshes, both of which have significantly fewer than 1 million DOFs. This suggests that problems with approximately 1 million DOFs or more are needed to maximize the benefits of GPU acceleration. \cite{trotter2023targeting} report a throughput of 189\,MDOF/s for the same problem using the Uniform 3 mesh on an NVIDIA V100 GPU. In this study, we achieved a throughput of 376 MDOF/s on the GH200 GPU, roughly twice that of the V100. This result is expected, since the GH200 offers higher memory bandwidth and FLOPS. Further investigation will explore the underlying factors behind these performance gains.
+The GPU does not appear fully saturated for the first two meshes, both of which have significantly fewer than 1 million DOFs.
+This suggests that problems with approximately 1 million DOFs or more are needed to maximize the benefits of GPU acceleration.
+\cite{trotter2023targeting} report a throughput of 189\,MDOF/s for the same problem using the Uniform 3 mesh on an NVIDIA V100 GPU.
+In this study, we achieved a throughput of 376 MDOF/s on the GH200 GPU, roughly twice that of the V100. This result is expected, since the GH200 offers higher memory bandwidth and FLOPS.
+Further investigation will explore the underlying factors behind these performance gains.
 \begin{table}[t]
     \centering
 \begin{tabular}{lrrrr}
