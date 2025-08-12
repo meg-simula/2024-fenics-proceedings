@@ -157,7 +157,8 @@ The primary hardware used in the following experiments is an NVIDIA GH200 Superc
 The Hopper GPU has a memory bandwidth of 4 TB/s, while the CPU has a memory bandwidth of 384 GB/s~\citep{gh200specs}.
 Experiments were conducted using the Vista system at the Texas Advanced Computing Center.
 \subsection{Poisson Equation}
-We now consider the problem of assembling a stiffness matrix for the solution of the Poisson equation on the unit cube. We use linear Lagrange finite elements on four different uniform tetrahedral meshes ranging in size from about 1.3 million to 16.5 million elements.  For each mesh, Table~\ref{tab:poisson_results} reports the throughput in millions of degrees of freedom (DOFs) per second (MDOF/s) for assembling the stiffness matrix with cuDOLFINx on a Hopper GPU and with DOLFINx on a Grace CPU.
+We now consider the problem of assembling a stiffness matrix for the solution of the Poisson equation on the unit cube. We use linear Lagrange finite elements on four different uniform tetrahedral meshes ranging in size from about 1.3 million to 16.5 million elements.
+For each mesh, \Cref{tab:poisson_results} reports the throughput in millions of degrees of freedom (DOFs) per second (MDOF/s) for assembling the stiffness matrix with cuDOLFINx on a Hopper GPU and with DOLFINx on a Grace CPU.
 
 The GPU does not appear fully saturated for the first two meshes, both of which have significantly fewer than 1 million DOFs.
 This suggests that problems with approximately 1 million DOFs or more are needed to maximize the benefits of GPU acceleration.
@@ -185,7 +186,7 @@ Uniform 4 & 16,464,000 & 2,803,221 & 373.3 & 29.8 \\
 {Shallow Water Equations}
 For a more realistic example that also displays the complexity enabled by FEniCSx, we present assembly benchmarks using the variational forms in SWEMniCS~\citep{dawson2024swemnics}, a FEniCSx-based solver for the shallow water equations. SWEMniCS implements a suite of stabilized 2D shallow water solvers with implicit time stepping. Due to the nonlinearity of the shallow water equations, a Newton solver is required at each time step.
 
-We investigate the efficiency of automatically generated CUDA assembly kernels for two stabilized schemes within SWEMniCS: the DG and the streamline upwind Petrov--Galerkin (SUPG) schemes. The DG method uses broken test and trial spaces with a Lax--Freidrichs numerical flux. The DG scheme is more numerically stable but requires more DOFs than the SUPG scheme due to the use of discontinuous function spaces. For each scheme, we averaged the performance of both GPU and CPU assembly kernels over 20 Newton iterations for tidal flow simulations on square domains with uniform triangular meshes. Table~\ref{tab:swe_a100_vs_epyc} shows the speedup when using an NVIDIA A100 GPU compared to a 64-core AMD EPYC 7763 CPU for assembling the Jacobian matrix and the residual vector for each scheme. The A100 GPU and EPYC CPU were both on the Lonestar6 system at the Texas Advanced Computing Center.
+We investigate the efficiency of automatically generated CUDA assembly kernels for two stabilized schemes within SWEMniCS: the DG and the streamline upwind Petrov--Galerkin (SUPG) schemes. The DG method uses broken test and trial spaces with a Lax--Freidrichs numerical flux. The DG scheme is more numerically stable but requires more DOFs than the SUPG scheme due to the use of discontinuous function spaces. For each scheme, we averaged the performance of both GPU and CPU assembly kernels over 20 Newton iterations for tidal flow simulations on square domains with uniform triangular meshes. \Cref{tab:swe_a100_vs_epyc} shows the speedup when using an NVIDIA A100 GPU compared to a 64-core AMD EPYC 7763 CPU for assembling the Jacobian matrix and the residual vector for each scheme. The A100 GPU and EPYC CPU were both on the Lonestar6 system at the Texas Advanced Computing Center.
 \begin{table}[t]
     \centering
     \begin{tabular}{lrrrrrrr}
@@ -216,7 +217,7 @@ Ultimately, the deciding factor in the more suitable method for GPU offloading i
     \centering
 \begin{tabular}{llrrrr}
 \toprule
-Method & Kernel & \begin{tabular}{@{}l}Theoretical\\ occupancy (%)\end{tabular} & \begin{tabular}{@{}l}Achieved\\ occupancy (%)\end{tabular} & \begin{tabular}{@{}l}Memory\\ throughput (%)\end{tabular} & \begin{tabular}{@{}l}Compute\\ throughput (%)\end{tabular} \\
+Method & Kernel & \begin{tabular}{@{}l}Theoretical\\ occupancy \end{tabular} & \begin{tabular}{@{}l}Achieved\\ occupancy \end{tabular} & \begin{tabular}{@{}l}Memory\\ throughput \end{tabular} & \begin{tabular}{@{}l}Compute\\ throughput \end{tabular} \\
 \midrule
 DG   & Jacobian & 12.50 & 12.33 & 41.44 & 10.43 \\
 DG   & Residual & 18.75 & 18.74 & 64.97 & 18.20 \\
