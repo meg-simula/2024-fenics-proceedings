@@ -178,7 +178,7 @@ Therefore, the constrained minimisation problem
     \bm{\theta}^\spEqlb_\h = \arg\underset{\vec{v} \in \feRT[m][d] \land\,\mathrm{CONSTR}}{\min} \norm{\vec{v} - \bm{\theta}_\h}
     \label{eq:eqlb_by_global_minimisation}
 \end{equation}
-is considered, where the constraints $\mathrm{CONSTR}$ and dimension $d$ follow from Definition \ref{def:equilibrated_flux} or \ref{def:equilibrated_stress}.
+is considered, where the constraints $\mathrm{CONSTR}$ and dimension $d$ follow from \Cref{def:equilibrated_flux} or \Cref{def:equilibrated_stress}.
 Since a global solution of \eqref{eq:eqlb_by_global_minimisation} is computationally too expensive, the problem is localised by introducing for each node $z$ the nodal, piece-wise linear basis function $\hatfunc$. 
 The support of $\hatfunc$ is denoted as patch $\patch$ and allows for the definition of the local function space
 \begin{equation*}
@@ -198,7 +198,7 @@ Summing up $\bm{\theta}^\spEqlb_{\h,z} \in \mathrm{V}_m(\patch)$ concludes the e
 
 Stresses can be handled similarly to fluxes, where, in a first step, each row of a stress tensor is treated as an independent flux. 
 The weak symmetry condition is enforced in a second step.
-Algorithm \ref{alg:eqlb_mesh_level} describes the structure therefore required on the mesh level.
+\Cref{alg:eqlb_mesh_level} describes the structure therefore required on the mesh level.
 Starting with lists of DOLFINx functions for the equilibrated fluxes $\left\{\fluxRHi\right\}$, the projected fluxes $\left\{\Pi_{m-1}\,\fluxHi\right\}$, the projected RHS $\left\{\Pi_{m-1}\,\mathrm{f}_i\right\}$, and the facets ($fct$) on the Dirichlet boundary of the primal problem $\left\{fct\in\Gamma_\mathrm{D}\right\}$, a general patch is created that must be updated for each mesh node.
 It serves as a submesh, respectively subfunction space, required for flux equilibration and enforcement of the weak symmetry condition.
 
@@ -220,8 +220,8 @@ The following discusses the patch-local algorithms for flux equilibration \ref{a
     \For{$i = 0;\ i < n_\mathrm{nodes};\ i++$}
     {
         $patch$.create\_subdofmap($n$)\;
-        equilibrate\_flux\_semiexplt(...) \tcp*{see Algorithm \ref{alg:eqlb_se_patch_level}}
-        \textbf{if} \textit{weaksym\_stresses} \textbf{then} impose\_weak\_symmetry(...) \tcp*{see Algorithm \ref{alg:eqlb_ws_patch_level}}
+        equilibrate\_flux\_semiexplt(...) \tcp*{see \Cref{alg:eqlb_se_patch_level}}
+        \textbf{if} \textit{weaksym\_stresses} \textbf{then} impose\_weak\_symmetry(...) \tcp*{see \Cref{alg:eqlb_ws_patch_level}}
     }
 \end{algorithm}
 
@@ -246,7 +246,7 @@ The required hierarchic definition of the Raviart--Thomas space is implemented u
 
 From an algorithmic perspective, the semi-explicit equilibration is performed on each patch for multiple RHSs simultaneously.
 Beside of patches attached to the boundary $\Gamma_\mathrm{N}$, this allows one to assemble the system matrix $\mat{A}$ and compute its Cholesky decomposition only once per patch and reuse it for the different RHSs. 
-The solution procedure is detailed in Algorithm \ref{alg:eqlb_se_patch_level}.
+The solution procedure is detailed in \Cref{alg:eqlb_se_patch_level}.
 \begin{algorithm}
     \caption{Function: equilibrate\_flux\_semiexplt}
     \label{alg:eqlb_se_patch_level}
@@ -331,7 +331,7 @@ To avoid the direct solution of
 the equation system resulting from the saddle point problem \eqref{eq:eqlb_ws_constrmin}, a Schur complement-based solver, is implemented. The vectors $\vec{u}_{R1}$ and $\vec{u}_{R2}$ denote the degrees of freedom (DOFs) for the rows of the stress tensor.
 Reusing the Cholesky decomposition of $\mat{A}$, the Schur complement $\mat{S} = \mat{B}_1\,\mat{A}^{-1}\,\transpT{\mat{B}_1} + \mat{B}_2\,\mat{A}^{-1}\,\transpT{\mat{B}_2}$ is calculated. 
 Solving $\mat{S}\cdot\vec{c}=\vec{L}_c$ based on its LU decomposition followed by solving $\mat{A}\cdot\vec{u}_{Ri}=-\mat{B}_i\cdot\vec{c}$ is notably faster than a direct solution of \eqref{eq:eqs_ws_constrmin}. 
-This procedure is outlined in Algorithm \ref{alg:eqlb_ws_patch_level}.
+This procedure is outlined in \Cref{alg:eqlb_ws_patch_level}.
 \begin{algorithm}
     \caption{Function: impose\_weak\_symmetry}
     \label{alg:eqlb_ws_patch_level}
@@ -387,7 +387,7 @@ Two sets of parameters $\kappa_2=\kappa_4=1$ and $\kappa_1=\kappa_3$ with either
 Dirichlet BCs according to the analytical solution of \cite{Riviere_ApostPoissonCoeffDG_2003} are prescribed on $\Gamma_\mathrm{D}=\partial\Omega$.
 Meshes are refined based on a Dörfler marking strategy with $\theta=0.5$. 
 
-Convergence orders (e.o.c) and efficiency indices after the final refinement step are reported in Fig. \ref{fig:poisson-riviere_results}, while the final meshes for the first- and second-order approximations of the case $\kappa_1=100$ are shown in Figs. \ref{fig:poisson-riviere_refmesh-p1} and \ref{fig:poisson-riviere_refmesh-p2}. 
+Convergence orders (e.o.c) and efficiency indices after the final refinement step are reported in \Cref{fig:poisson-riviere_results}, while the final meshes for the first- and second-order approximations of the case $\kappa_1=100$ are shown in \Cref{fig:poisson-riviere_refmesh-p1,fig:poisson-riviere_refmesh-p2}. 
 The solutions are in good agreement with the literature. 
 Meshes are refined around the singularity in the centre of the domain, and the convergence rates are $\approx-0.5$ for $\GenSolH\in\feP[1]$ and $\approx-1$ for $\GenSolH\in\feP[2]$.
 For $\kappa_1 = 100$, a convergence rate $<-1$ indicates a pre-asymptotic state of convergence.
@@ -438,10 +438,10 @@ They are slightly worse for $m=k$.
 \label{fig:cook_definition}
 \end{wrapfigure}
 \textbf{Example 2:} Based on the Poisson equation, the influence of the equilibration order $m$ on the efficiency of the resulting estimate is shown.
-Using the Cooks membrane in Fig. \ref{fig:cook_definition}, this analysis is extended to linear elasticity, where the symmetry of the stress tensor is considered in a weak sense.
+Using the Cooks membrane in \Cref{fig:cook_definition}, this analysis is extended to linear elasticity, where the symmetry of the stress tensor is considered in a weak sense.
 This analysis considers $\Pi_1=2.333$, $t=0.03$, and adaptive meshes based on a Dörfler marking strategy with $\theta=0.6$.
-Characteristics of the first mesh satisfying $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$ are summarised in Fig. \ref{fig:cook_results-summary}. Since $\LinPKEqlbH$ exactly fulfils the divergence condition from Definition \ref{def:equilibrated_stress}, $\eta$ reduces to the sum of the $\mathcal{A}$-norm of the stress difference $\LinPKEqlbH - \stressPKLin_\h$ and the norm of asymmetric part of $\LinPKEqlbH$. 
-Following \ref{fig:cook_results-summary}, the estimate is clearly dominated by the second part.
+Characteristics of the first mesh satisfying $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$ are summarised in \Cref{fig:cook_results-summary}. Since $\LinPKEqlbH$ exactly fulfils the divergence condition from \Cref{def:equilibrated_stress}, $\eta$ reduces to the sum of the $\mathcal{A}$-norm of the stress difference $\LinPKEqlbH - \stressPKLin_\h$ and the norm of asymmetric part of $\LinPKEqlbH$.
+Following \Cref{fig:cook_results-summary}, the estimate is clearly dominated by the second part.
 Using equilibrated stresses of order $m=k+1$ increases the efficiency, with a relative reduction (compared to the case with $m=k$) comparable to those in the Poisson example.
 Increasing the accuracy of the error estimate affects the effectivity of the adaptive solution procedure -- measured by the number of degrees of
 freedom required for a certain error -- in a positive way.
@@ -452,7 +452,7 @@ A practical shortcut -- equilibration for $m=k+1$ is significantly more expensiv
     \label{eq:elasticity_heuristic-ei}
 \end{eqnarray}
 where no weak symmetry is enforced on $\LinPKEqlbH$.
-This yields efficiency indices close to one (see Fig. \ref{fig:cook_results-summary}) and, comparing the convergence history in Fig. \ref{fig:cook_results-convhist}, yields slightly better results as the guaranteed estimate with $m=k+1$.
+This yields efficiency indices close to one (see \Cref{fig:cook_results-summary}) and, comparing the convergence history in \Cref{fig:cook_results-convhist}, yields slightly better results as the guaranteed estimate with $m=k+1$.
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
@@ -485,8 +485,8 @@ This yields efficiency indices close to one (see Fig. \ref{fig:cook_results-summ
 
 Up to this point, only the accuracy of the error estimates has been compared. 
 In the following, the focus will be on the total solution time $t_\mathrm{tot}$, which comprises $t_\mathrm{prime}$ -- the time for assembly and solution, using PETSc and MUMPS, of the primal problem -- and $t_\mathrm{eqlb}$, the time to perform the equilibration.
-Comparing in a first step the relative equilibration costs $t_\mathrm{eqlb}/t_\mathrm{tot}$ for the Cook's membrane with fixed meshes in Fig. \ref{fig:cook_performance-uniform}, one finds that -- for a primal problem of sufficient size -- $t_\mathrm{eqlb}$ is considerably smaller than $t_\mathrm{prime}$.  
-Increasing $k$ increases the effort required for equilibration, while an equilibration with $m=k+1$ is significantly more expensive than the respective lowest-order case $m=k$. Similar timings for the adaptive solution of the Cook's membrane (timings are accumulated until $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$) are summarised in Table \ref{fig:cook_performance-adaptive}.
+Comparing in a first step the relative equilibration costs $t_\mathrm{eqlb}/t_\mathrm{tot}$ for the Cook's membrane with fixed meshes in \Cref{fig:cook_performance-uniform}, one finds that -- for a primal problem of sufficient size -- $t_\mathrm{eqlb}$ is considerably smaller than $t_\mathrm{prime}$.  
+Increasing $k$ increases the effort required for equilibration, while an equilibration with $m=k+1$ is significantly more expensive than the respective lowest-order case $m=k$. Similar timings for the adaptive solution of the Cook's membrane (timings are accumulated until $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$) are summarised in \Cref{fig:cook_performance-adaptive}.
 While the total solution time is dominated by the solution of the primal problem for the cases $k=m=2$, this trend is reversed for the more accurate (guaranteed) estimate with $k=m-1=2$.
 Even though this case has the fewest primal degrees of freedom, the entire solution time is the longest due to the high computational costs for the equilibration.
 Using primal approximations based on $k=3$ reduces the overall computation time but leads to equilibration taking up a significant share of the total computation time, an effect amplified by the small sizes of the primal problems.
