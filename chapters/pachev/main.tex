@@ -179,12 +179,14 @@ Uniform 3 &  6,000,000 & 1,030,301 & 376.5 & 13.0 \\
 Uniform 4 & 16,464,000 & 2,803,221 & 373.3 & 29.8 \\
 \bottomrule
 \end{tabular}
-\caption{Performance of Poisson matrix assembly, in millions of DOFs per second}
+\caption{Performance of Poisson matrix assembly, in millions of DOFs per second.}
     \label{tab:poisson_results}
 \end{table}
 \subsection
 {Shallow Water Equations}
-For a more realistic example that also displays the complexity enabled by FEniCSx, we present assembly benchmarks using the variational forms in SWEMniCS~\citep{dawson2024swemnics}, a FEniCSx-based solver for the shallow water equations. SWEMniCS implements a suite of stabilized 2D shallow water solvers with implicit time stepping. Due to the nonlinearity of the shallow water equations, a Newton solver is required at each time step.
+For a more realistic example that also displays the complexity enabled by FEniCSx, we present assembly benchmarks using the variational forms in SWEMniCS~\citep{dawson2024swemnics}, a FEniCSx-based solver for the shallow water equations.
+SWEMniCS implements a suite of stabilized 2D shallow water solvers with implicit time stepping.
+Due to the nonlinearity of the shallow water equations, a Newton solver is required at each time step.
 
 We investigate the efficiency of automatically generated CUDA assembly kernels for two stabilized schemes within SWEMniCS: the DG and the streamline upwind Petrov--Galerkin (SUPG) schemes. The DG method uses broken test and trial spaces with a Lax--Freidrichs numerical flux. The DG scheme is more numerically stable but requires more DOFs than the SUPG scheme due to the use of discontinuous function spaces. For each scheme, we averaged the performance of both GPU and CPU assembly kernels over 20 Newton iterations for tidal flow simulations on square domains with uniform triangular meshes. \Cref{tab:swe_a100_vs_epyc} shows the speedup when using an NVIDIA A100 GPU compared to a 64-core AMD EPYC 7763 CPU for assembling the Jacobian matrix and the residual vector for each scheme. The A100 GPU and EPYC CPU were both on the Lonestar6 system at the Texas Advanced Computing Center.
 \begin{table}[t]
