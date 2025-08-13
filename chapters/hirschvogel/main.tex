@@ -1,3 +1,6 @@
+% Write the full path to the location of the graphics relative to book.tex
+% \graphicspath{{chapters/chp1/graphics/}}
+
 \title{Blood Flow in the Beating Heart: Coupling Fluid Dynamics to Reduced Wall and Circulation Models for Data-Driven Cardiac FSI}
 \titlerunning{Blood Flow in the Beating Heart}
 
@@ -63,7 +66,7 @@ The incompressible non-conservative ALE Navier--Stokes equations, defining the c
 	\nabla\cdot\boldsymbol{v} &= 0 && \;\text{in}\; \mathit{\mathit{\Omega}} \times [0,T], \label{eq:ns_strong_mass}
 \end{align}
 where $\nabla$ is the gradient operator with respect to physical space ($\nabla\boldsymbol{v}:=\frac{\partial v_{i}}{\partial x_{j}}\boldsymbol{e}_{i}\otimes\boldsymbol{e}_{j}$), and $\left.\frac{\partial (\bullet)}{\partial t}\right|_{\boldsymbol{x}_{0}}$ is the time derivative in the ALE frame. Further, $\boldsymbol{v}$ and $p$ are the fluid's velocity and pressure, respectively, $\boldsymbol{w}$ is the ALE domain velocity, and $\rho=1.025\cdot 10^{-6}\;\frac{\mathrm{kg}}{\mathrm{mm}^{3}}$ is the blood density. 
-The ventricular blood is assumed to be a Newtonian fluid, such that the Cauchy stress $\boldsymbol{\sigma} = -p \boldsymbol{I} + \mu \left(\nabla \boldsymbol{v} + (\nabla \boldsymbol{v})^{\mathrm{T}}\right)$, with dynamic viscosity $\mu=4\cdot 10^{-6}\;\mathrm{kPa\cdot s}$. 
+The ventricular blood is assumed to be a Newtonian fluid, such that the Cauchy stress is $\boldsymbol{\sigma} = -p \boldsymbol{I} + \mu \left(\nabla \boldsymbol{v} + (\nabla \boldsymbol{v})^{\mathrm{T}}\right)$, with dynamic viscosity $\mu=4\cdot 10^{-6}\;\mathrm{kPa\cdot s}$. 
 The fluid's boundary wall $\mathit{\Gamma}_{0}^{\mathrm{f}\text{-}\tilde{\mathrm{s}}}$ is assumed to be deformable and is described by a reduced solid mechanics model governed by the balance of linear momentum of finite strain elastodynamics, entailing the physics component of the FrSI method \cite{hirschvogel2024-frsi}. 
 Since the displacement field at the boundary can be entirely derived from the fluid's velocity field, kinematic compatibility and traction continuity are readily fulfilled by incorporating the following boundary traction (for comparable derivations for small strain solid wall models, see \cite{colciago2014}):
 \begin{align}
