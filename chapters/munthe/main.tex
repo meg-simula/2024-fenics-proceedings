@@ -72,7 +72,7 @@ For further information about continuum mechanics, we recommend \cite{Marsden198
 
 \subsection{Numerical Implementation}
  
-Algorithm \ref{alg:growth_deform} gives an overview of the steps involved in the solution
+\Cref{alg:growth_deform} gives an overview of the steps involved in the solution
 of the growth model equations. For stress-based growth, one would update the stress tensor rather than the strain tensor, and for additive growth laws, one would sum the cumulative and incremental growth tensors instead of multiplying them. \par
 \begin{algorithm} 
     \caption{The growth tensor and stress/strain tensor are updated at each growth step. Both $\mathbf{F}_\mathrm{e}$ and $\mathbf{F}_g^\mathrm{inc}$ are dependent on $\mathbf{u}$.}\label{alg:growth_deform}
