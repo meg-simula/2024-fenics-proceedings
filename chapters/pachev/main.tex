@@ -152,12 +152,14 @@ A final step remains within the loop. The updated solution needs to be copied ba
 \end{python}
 
 We will show representative use cases in which GPU acceleration can significantly enhance FEniCSx performance.
+
 \section{Performance Evaluation}
 We begin with two examples of the performance of the GPU assembly kernels in cuDOLFINx and then present a use case of complete GPU offloading for both assembly and linear solves.
 All computations in the following experiments are performed in double precision.
 The primary hardware used in the following experiments is an NVIDIA GH200 Superchip, which consists of a Hopper GPU with 132 streaming multiprocessors connected to a 72-core Grace CPU.
 The Hopper GPU has a memory bandwidth of 4 TB/s, while the CPU has a memory bandwidth of 384 GB/s~\citep{gh200specs}.
 Experiments were conducted using the Vista system at the Texas Advanced Computing Center.
+
 \subsection{Poisson Equation}
 We now consider the problem of assembling a stiffness matrix for the solution of the Poisson equation on the unit cube. We use linear Lagrange finite elements on four different uniform tetrahedral meshes ranging in size from about 1.3 million to 16.5 million elements.
 For each mesh, \Cref{tab:poisson_results} reports the throughput in millions of degrees of freedom (DOFs) per second (MDOF/s) for assembling the stiffness matrix with cuDOLFINx on a Hopper GPU and with DOLFINx on a Grace CPU.
@@ -184,6 +186,7 @@ Uniform 4 & 16,464,000 & 2,803,221 & 373.3 & 29.8 \\
 \caption{Performance of Poisson matrix assembly, in millions of DOFs per second.}
     \label{tab:poisson_results}
 \end{table}
+
 \subsection{Shallow Water Equations}
 For a more realistic example that also displays the complexity enabled by FEniCSx, we present assembly benchmarks using the variational forms in SWEMniCS~\citep{dawson2024swemnics}, a FEniCSx-based solver for the shallow water equations.
 SWEMniCS implements a suite of stabilized 2D shallow water solvers with implicit time stepping.
@@ -231,6 +234,7 @@ SUPG & Residual & 12.50 & 12.39 &  5.64 & 77.85 \\
 \caption{Profiling statistics for the GPU assembly kernels on a square mesh}
     \label{tab:tidal_prof}
 \end{table}
+
 \subsection{Navier--Stokes Equation}
 
 Although matrix assembly is a crucial part of the finite element method, most solvers also require the solution of linear systems. To assess the practicality of offloading typical FEniCSx code to the GPU, we modify an existing FEniCSx Navier--Stokes solver~\citep{dokkenipcs} to use cuDOLFINx.
@@ -260,10 +264,12 @@ Stage & Solver/preconditioner       & Assembly & Solve               & Assembly 
 Overall, the CUDA-accelerated solver averaged 2.07\,s per time step, while the original solver took 7.89\,s per time step. The overall speedup is therefore a factor of three.8${\times}$. While the solution time is dominated by the linear solve for the first stage, assembly comprises over 10\% of the total runtime for both the GPU and CPU codes. 
 
 We note that, compared to the Poisson example, the assembly speedup for the Navier--Stokes code is lower. We hypothesize this is due to the use of second-order elements for the velocity field. Higher-order elements are known to pose difficulties for the GPU offloading approach used within cuDOLFINx, because the auto-generated GPU kernels can require a large number of registers. This results in a phenomenon known as \textit{register spilling}, in which the GPU kernels are forced to utilize global memory to store some local variables, which degrades performance. Solutions include reworking the generated code to better hide memory transfer latency, potentially by reducing register spillage or minimizing the use of local memory. Another approach is to assemble each element using multiple GPU threads to reduce the required resources per thread. Both of these solutions would require substantial enhancements to FFCx, the form compiler within the FEniCS project. Nevertheless, the speedup obtained for assembly with quadratic elements in this case is still significant.
+
 \section{Conclusion}
 We have introduced cuDOLFINx, an add-on enhancement to FEniCSx that provides GPU-accelerated assembly routines. We have demonstrated that offloading assembly to a GPU can provide significant speedup compared to multi-core CPUs, particularly for first-order elements. The package has a simple Python interface and can be utilized in FEniCSx codebases with little effort.
 
 In the near future, we intend to add support for multiple GPUs. Subsequent efforts will focus on providing support for non-NVIDIA GPUs, as well as developing efficient kernels for assembly with high-order elements. Work is currently underway to expand the documentation and examples, as well as to create easily installable binary distributions.
+
 \section{Supplementary Material}
 The source code of cuDOLFINx is archived at \citep{cudolfinxzenodo}.
 
