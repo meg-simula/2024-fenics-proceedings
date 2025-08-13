@@ -231,7 +231,11 @@ SUPG & Residual & 12.50 & 12.39 &  5.64 & 77.85 \\
 \subsection
 {Navier--Stokes Equation}
 
-Although matrix assembly is a crucial part of the finite element method, most solvers also require the solution of linear systems. To assess the practicality of offloading typical FEniCSx code to the GPU, we modify an existing FEniCSx Navier--Stokes solver~\citep{dokkenipcs} to use cuDOLFINx. The modified solver is hosted in a forked GitHub repository \citep{pachevipcs}. The solver uses an incremental pressure correction scheme~\citep{dokken2019shape} that requires three stages per time step. Although each stage requires a linear solve and assembly of a vector, only the first requires reassembly of a stiffness matrix. Second-order Lagrange tetrahedral elements are used for the velocity field and first-order Lagrange elements for the pressure field. The mesh is a refined version of the 3D channel with an obstacle used in the original code and contains 1,995,628 tetrahedra with 355,319 vertices.
+Although matrix assembly is a crucial part of the finite element method, most solvers also require the solution of linear systems. To assess the practicality of offloading typical FEniCSx code to the GPU, we modify an existing FEniCSx Navier--Stokes solver~\citep{dokkenipcs} to use cuDOLFINx.
+The modified solver is hosted in a forked GitHub repository \citep{pachevipcs}.
+The solver uses an incremental pressure correction scheme~\citep{timmermans1996approximate,simo1994unconditional} that requires three stages per time step.
+Although each stage requires a linear solve and assembly of a vector, only the first requires reassembly of a stiffness matrix. Second-order Lagrange tetrahedral elements are used for the velocity field and first-order Lagrange elements for the pressure field.
+The mesh is a refined version of the 3D channel with an obstacle used in the original code and contains 1,995,628 tetrahedra with 355,319 vertices.
 
 The same hardware is used for comparison as in the Poisson experiment, namely, the Hopper GPU and Grace CPU within a GH200 Superchip.
 \Cref{tab:navier_stokes_results} provides the average timing results over 100 time steps for each component of the solver.
