@@ -60,11 +60,13 @@ where \( \rho \) is density, \( c \) is thermal capacity, \( T \) is temperature
 \end{equation}
 
 \begin{equation}
-    L_{n+1}(v) = \int_\Omega f^{n+1} v dx 
-    + \frac{\rho c}{\Delta t} \int_\Omega  T^{n} v dx 
-    -  \int_{\partial \Omega} q v ds
+    \begin{aligned}
+    L_{n+1}(v) &= \int_\Omega f^{n+1} v dx
+    + \frac{\rho c}{\Delta t} \int_\Omega  T^{n} v dx \\
+    &-  \int_{\partial \Omega} q v ds
     +  \int_{\partial \Omega} h T_a v ds 
     + \int_{\partial \Omega} \epsilon \sigma T_a^4 v ds,
+    \end{aligned}
 \end{equation}
 where \( \Omega \) is the computation domain, \( \partial \Omega \) is the boundary, \( dx \) is the differential element for integration over the domain, \( ds \) is the differential element for integration over the boundary, \( h \) is the heat convection coefficient,  \(\Delta t\)\ is the time step, and \(n\) is an integer counting time steps. The thermal radiation equation is based on the Stefan--Boltzmann law, where \( \epsilon \) is emissivity, \( \sigma \) is the Stefan--Boltzmann constant, \(T\) is the temperature, \(T^4\) is the temperature to the fourth power, and \( T_a \) is ambient temperature. For a more detailed derivation, see \cite{zhang_heat_transfer2024}.
 
