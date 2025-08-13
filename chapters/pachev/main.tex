@@ -145,7 +145,8 @@ A final step remains within the loop. The updated solution needs to be copied ba
 \begin{python}
   if use_cuda:
     # Ensure host-side values of u match device-side values
-    u.x.array[:] = u.vector.array
+    u.x.array[:len(u.vector.array)] = u.vector.array
+    u.x.scatter_forward()
 \end{python}
 
 We will everal representative use cases in which GPU acceleration can significantly enhance FEniCSx performance.
