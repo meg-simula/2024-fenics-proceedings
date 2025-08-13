@@ -55,7 +55,7 @@ The final component contains the Python bindings for the C++ core. Most users wi
 We demonstrate the Python wrapper's usage in the following section.
 \section{Sample Usage}
 
-Using cuDOLFINx within
+Using cuDOLFINx within existing FEniCSx code requires only minor modifications. Consider the following example for solving Poisson's equation on the unit square:
 \begin{python}
 from mpi4py import MPI
 from dolfinx import fem, mesh
@@ -120,7 +120,8 @@ if use_cuda:
 else:
   ksp.setOperators(A)
 \end{python}
-Finally, we reach the Newton iteration loop. Note the use of PETSc operations to add the computed Newton update to the solution, instead of vectorized NumPy operations as is common in FEniCSx code. This allows the computation to happen on the GPU and is the reason that \pythoninline{u_update.vector} and \pythoninline{u.vector} have to be PETSc CUDA vectors.
+Finally, we reach the Newton iteration loop. Note the use of PETSc operations to add the computed Newton update to the solution, instead of vectorized NumPy operations as is common in FEniCSx code.
+This allows the computation to happen on the GPU and is the reason that \pythoninline{u_update.vector} and \pythoninline{u.vector} have to be PETSc CUDA vectors.
 \begin{python}
 for i in range(5):
   if use_cuda:
