@@ -34,7 +34,7 @@ We benchmarked the method on ideal 2D and 3D geometries and then applied it to a
 \label{sec:methods}
 
 \subsection{Data Assimilation Method}
-The VarDA approach was formulated as an optimization problem constrained by the NS equations, using the dolfin-adjoint library for the adjoint problem. The process follows three steps: running a first numerical simulation with tentative inlet BCs (which we refer to as the \emph{forward model} or \emph{tape}), solving the optimization problem to identify inlet BCs, and running a final numerical simulation yielding the refined velocity and pressure fields (Fig. \ref{fig:scheme}).
+The VarDA approach was formulated as an optimization problem constrained by the NS equations, using the dolfin-adjoint library for the adjoint problem. The process follows three steps: running a first numerical simulation with tentative inlet BCs (which we refer to as the \emph{forward model} or \emph{tape}), solving the optimization problem to identify inlet BCs, and running a final numerical simulation yielding the refined velocity and pressure fields (\Cref{fig:scheme}).
 
 \subsection{Forward Problem Definition}
 The weak and discretized form of NS equations for an incompressible fluid \citep{Stokes2009} has been solved using the finite element platform FEniCS \citep{Alnaes2015} to compute the velocity field $\mathbf{u}$ over a domain $\Omega$, given an initial condition (IC), defined as \(\mathbf{u}=\mathbf{u_0}\) on $\Omega$ at time $t_0$, a zero pressure condition at the outlet section $\Omega_N$, and a Dirichlet BC at the inlet section $\Omega_D$ in the form of a space- and time-dependent velocity profile $\mathbf{g}$.

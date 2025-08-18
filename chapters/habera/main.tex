@@ -134,7 +134,7 @@ STREAM \citep{McCalpin1995,McCalpin2007} is the industry standard benchmark for
 measuring sustained memory bandwidth performance, with McCalpin estimating memory bandwidth
 from memory-intense operations (copy, scale, add) on large contiguous arrays.
 
-Figure \ref{fig:stream-single} shows the results for the copy operation for a single-node
+\Cref{fig:stream-single} shows the results for the copy operation for a single-node
 benchmark. For the single-node benchmark, $80 \%$ of the
 theoretical peak memory bandwidth of $\SI{400}{\giga\byte\per\second}$ for Aion
 and $\SI{300}{\giga\byte\per\second}$ for AWS c7g is reached. This is considered
@@ -256,13 +256,12 @@ LLVM/clang 18.1.3 and GNU Compiler Collection (GCC) 13.2.0. Full details are pro
     \label{tab:compilers-kernels}
 \end{table}
 
-The kernel benchmark results are presented in Figs. \ref{fig:local-deg1}
-and \ref{fig:local-deg8}. Low-order kernels (Fig. \ref{fig:local-deg1}) show no
+The kernel benchmark results are presented in \Cref{fig:local-deg1,fig:local-deg8}. Low-order kernels (\Cref{fig:local-deg1}) show no
 dependence on the compiler vectorization setup. On the other hand, AWS c7g demonstrates a
 $1.3\times$ speedup over Aion, which we attribute to greater memory bandwidth for  a
 single process.
 
-High-order kernels (Fig. \ref{fig:local-deg8}), which are expected to benefit from
+High-order kernels (\Cref{fig:local-deg8}), which are expected to benefit from
 SIMD operations, reveal a clear link between compiler settings and performance.
 Both clang and GCC auto-vectorizers perform well, producing a noticeable
 speedup (\textgreater $2\times$) in the most optimized setting. The vectorization
@@ -367,7 +366,7 @@ can highlight issues in either the finite element solver or the underlying MPI
 hardware/software stack, leading to poor parallel scaling. 
 %
 Weak scaling results (with a constant workload of approximately \SI{5e+5} degrees of freedom
-per process) are shown in Fig. \ref{fig:weak-scaling}. Both Aion and AWS c7gn
+per process) are shown in \Cref{fig:weak-scaling}. Both Aion and AWS c7gn
 show almost constant times for mesh creation ($< 5\%$ difference).
 
 Matrix assembly is expected to have ideal weak parallel scalability due to the

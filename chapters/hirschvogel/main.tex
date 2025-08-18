@@ -25,7 +25,7 @@ The solver and preconditioning aspects of this model and other fluid dynamics pr
 
 
 \section*{Methods}
-The FrSI problem of a 3D left heart model (atrium, ventricle, aortic outflow tract) along with the underlying data sources is depicted in Fig.~\ref{fig:heart_problem}. 
+The FrSI problem of a 3D left heart model (atrium, ventricle, aortic outflow tract) along with the underlying data sources is depicted in \Cref{fig:heart_problem}. 
 In particular, domain and motion data are retrieved from time-resolved dynamic CT, which are subsequently mapped to a finite element mesh to generate a discrete space of modes using POD \citep{rathinam2003}. 
 The model is further coupled to a closed-loop systemic, pulmonary, and coronary circulation system \citep{hirschvogel2017,arthurs2016} to provide physiologically meaningful cardiovascular loads to the 3D model.
 \begin{figure}[!htp]
@@ -40,7 +40,7 @@ The model is further coupled to a closed-loop systemic, pulmonary, and coronary 
 \end{figure}
 
 \subsection*{Patient Data Preprocessing }
-The FrSI approach relies on external data sourced from either some high-dimensional model or patient-specific imaging data. Here, we build a patient-specific model of the left heart by segmenting a dynamic cardiac CT dataset using 3D Slicer \citep{kikinis2014-3dslicer}; see Fig.~\ref{fig:heart_problem}A. A diastolic frame is subsequently meshed with SimModeler \citep{simmodeler}, and a motion tracking algorithm is used to extract the wall velocities at each frame and map them to the finite element mesh (with a velocity degree-of-freedom space of size $n_{v}$). Thereafter, the wall velocity data for $m=19$ frames is collected into a snapshot matrix $\hat{\boldsymbol{\mathsf{S}}} \in \mathbb{R}^{n_{v} \times m}$, and the eigenvalue problem
+The FrSI approach relies on external data sourced from either some high-dimensional model or patient-specific imaging data. Here, we build a patient-specific model of the left heart by segmenting a dynamic cardiac CT dataset using 3D Slicer \citep{kikinis2014-3dslicer}; see \Cref{fig:heart_problem}A. A diastolic frame is subsequently meshed with SimModeler \citep{simmodeler}, and a motion tracking algorithm is used to extract the wall velocities at each frame and map them to the finite element mesh (with a velocity degree-of-freedom space of size $n_{v}$). Thereafter, the wall velocity data for $m=19$ frames is collected into a snapshot matrix $\hat{\boldsymbol{\mathsf{S}}} \in \mathbb{R}^{n_{v} \times m}$, and the eigenvalue problem
 \begin{align}
     (\hat{\boldsymbol{\mathsf{S}}}^{\mathrm{T}} \hat{\boldsymbol{\mathsf{S}}}) \,\boldsymbol{\uppsi}_{i} = \uplambda_{i} \,\boldsymbol{\uppsi}_{i}, \quad i = 1, \hdots, m,\label{eq:rom_eigensolve}
 \end{align}
@@ -48,11 +48,11 @@ is solved, with eigenvalues $\uplambda$ and eigenvectors $\boldsymbol{\uppsi} \i
 \begin{align}
     \boldsymbol{\upphi}_{j} = \frac{1}{\sqrt{\uplambda_{j}}} \hat{\boldsymbol{\mathsf{S}}} \boldsymbol{\uppsi}_{j}, \quad j = 1, \hdots, r_{v}, \label{eq:phi_Phi_frsi}
 \end{align}
-the first three of which are shown in Fig.~\ref{fig:heart_problem}B. A suitable Galerkin model reduction operator
+the first three of which are shown in \Cref{fig:heart_problem}B. A suitable Galerkin model reduction operator
 \begin{align}
     \boldsymbol{\mathsf{V}}_{v}^{\Gamma} \in \mathbb{R}^{n_v \times (r_v + n_{v}^{\mathit{\Omega}})}, \label{eq:Vgamma}
 \end{align}
-then needs to be defined, with $n_{v}^{\mathit{\Omega}}$ as the size of the space of bulk (non-boundary) velocities. In (\ref{eq:Vgamma}), POD modes (\ref{eq:phi_Phi_frsi}) have to be incorporated such that velocity degrees of freedom on $\Gamma_{0}^{\mathrm{f}\text{-}\tilde{\mathrm{s}}}$ are confined to the lower-dimensional subspace, but those associated with the bulk domain remain unconstrained \cite{hirschvogel2024-frsi}. Furthermore, the POD space is decomposed with a partition of unity approach such that each region can exhibit independent kinematics (see Fig.~\ref{fig:heart_problem}C).
+then needs to be defined, with $n_{v}^{\mathit{\Omega}}$ as the size of the space of bulk (non-boundary) velocities. In (\ref{eq:Vgamma}), POD modes (\ref{eq:phi_Phi_frsi}) have to be incorporated such that velocity degrees of freedom on $\Gamma_{0}^{\mathrm{f}\text{-}\tilde{\mathrm{s}}}$ are confined to the lower-dimensional subspace, but those associated with the bulk domain remain unconstrained \cite{hirschvogel2024-frsi}. Furthermore, the POD space is decomposed with a partition of unity approach such that each region can exhibit independent kinematics (see \Cref{fig:heart_problem}C).
 
 \subsection*{Strong Form Problem Statement}
 We briefly state the strong problem of FrSI -- fluid dynamics in an ALE reference frame \citep{donea1982,duarte2004} with a reduced structural wall model -- subject to nonlocal flux-dependent tractions at the in- and outflows. The boundary subspace projection is then performed on the discrete system presented in a later section.\\
@@ -158,7 +158,7 @@ which are the derivatives in the direction of the velocity, pressure, multiplier
 
 \subsection*{Discretization and Solution}
 The problem is discretized with finite elements of piecewise linear Lagrange polynomials in space and a single-step implicit finite difference scheme in time (one-step $\theta$ scheme, with $\theta\in\;]0; 1]$).
-The projection-based component of the FrSI method requires the reduced solid boundary to be projected to a lower-dimensional subspace spanned by POD modes (see Fig.~\ref{fig:heart_problem}B depicting the first three modes of this space). This is done by the boundary Galerkin projection operator (\ref{eq:Vgamma}).
+The projection-based component of the FrSI method requires the reduced solid boundary to be projected to a lower-dimensional subspace spanned by POD modes (see \Cref{fig:heart_problem}B depicting the first three modes of this space). This is done by the boundary Galerkin projection operator (\ref{eq:Vgamma}).
 At the discrete assembled stage at the current time step, indexed by $n+1$, we seek to find the discrete velocity $\boldsymbol{\mathsf{v}}_{n+1}$, pressure $\boldsymbol{\mathsf{p}}_{n+1}$, 3D--0D coupling multipliers $\boldsymbol{\Lambda}_{n+1}$, and domain displacements $\boldsymbol{\mathsf{d}}_{n+1}$ satisfying
 \begin{align}
     \boldsymbol{\mathsf{r}}_{n+1} = \begin{bmatrix} 
@@ -195,7 +195,7 @@ followed by the solution of (\ref{eq:lin_sys_rom_frsi_mono}). In (\ref{eq:lin_sy
 
 \section*{Results}
 
-Figure~\ref{fig:heart_results} shows the results of a full heart cycle simulation. The physical time of the simulation is $T=1\;\mathrm{s}$, with a time step size of $\Delta t = 0.00125\;\mathrm{s}$, for a total of $N=800$ time steps. The mid-point single-step time integration method was set to be backward Euler, such that $\theta=1$. The 3D computational domain consists of $265,722$ nodes ($1,487,039$ finite elements), and the overall problem size has $1,790,303$ degrees of freedom. The resulting linear system (\ref{eq:lin_sys_rom_frsi_mono}) was solved with an FGMRES \citep{saad1993} algorithm preconditioned by our recently proposed BGS-S3\texttimes 3 preconditioner \citep{hirschvogel2025-prec}. All the methods are implemented in open-source FEniCSx- \citep{baratta2023dolfinx} and PETSc-based \citep{balay2022-petsc} solver Ambit \citep{hirschvogel2024-ambit}.
+\Cref{fig:heart_results} shows the results of a full heart cycle simulation. The physical time of the simulation is $T=1\;\mathrm{s}$, with a time step size of $\Delta t = 0.00125\;\mathrm{s}$, for a total of $N=800$ time steps. The mid-point single-step time integration method was set to be backward Euler, such that $\theta=1$. The 3D computational domain consists of $265,722$ nodes ($1,487,039$ finite elements), and the overall problem size has $1,790,303$ degrees of freedom. The resulting linear system (\ref{eq:lin_sys_rom_frsi_mono}) was solved with an FGMRES \citep{saad1993} algorithm preconditioned by our recently proposed BGS-S3\texttimes 3 preconditioner \citep{hirschvogel2025-prec}. All the methods are implemented in open-source FEniCSx- \citep{baratta2023dolfinx} and PETSc-based \citep{balay2022-petsc} solver Ambit \citep{hirschvogel2024-ambit}.
 
 \begin{figure}[!htp]
 \centering
