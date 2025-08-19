@@ -95,7 +95,7 @@ For any arbitrary $\GenSolH \in \VecSpace[]{V}_{\Gamma ,k}$ and any equilibrated
 \end{equation}
 holds. The differences $\delta\flux$ and $\delta\GenSol$ denote $\flux(\GenSol) - \fluxR$ respectively $\GenSol - \GenSolH$. Further introducing the Raviart--Thomas space of order $m$, $\feRT[m]$, one finds an upper bound on the error in a scaled $\mathrm{H}^1$ norm to hold.
 \begin{theorem}
-    Let $\kappa$ be piecewise constant, $\GenSol \in \HiSpace[\domain][\Gamma_\mathrm{D}]$ be the solution of \eqref{eq:poisson_weak}, $\GenSolH \in \VecSpace[]{V}_{\Gamma ,k}$ be arbitrary, and $\fluxRH\in\feRT[m]$ be an equilibrated flux. Then
+    Let $\kappa$ be piecewise constant, $\GenSol \in \HiSpace[\domain][\Gamma_\mathrm{D}]$ be the solution of \cref{eq:poisson_weak}, $\GenSolH \in \VecSpace[]{V}_{\Gamma ,k}$ be arbitrary, and $\fluxRH\in\feRT[m]$ be an equilibrated flux. Then
     \begin{equation}
         \norm{\kappa^{1/2}\grad\bracketed{\GenSol - \GenSolH}}^2 \leq \sum_{\mathrm{T}\in\domainH} \bracketed{\norm[\mathrm{T}]{\kappa^{-1/2}\bracketed{\fluxRH - \fluxH}} + C_P \norm[\mathrm{T}]{\mathrm{f} - \div\fluxRH}}^2\; .
         \label{eq:ee_poisson-disc-kappa}
@@ -133,7 +133,7 @@ An equilibrated stress is a function $\LinPKEqlbH\in\feRT[m][2]$
 While the error is measured in the energy norm $\vert\vert\vert \bullet \vert\vert\vert^2 = \norm{\strainGreenLagrangeLin\left(\bullet\right)}^2 + \tilde{\Lamei}\,\norm{\div\left(\bullet\right)}^2$, the operator $\displaystyle \mathcal{A}\left(\bullet\right) = \frac{1}{2}\bracketed{\left(\bullet\right) - \frac{\tilde{\Lamei}}{2\,(1+\tilde{\Lamei})}\tr{\left(\bullet\right)}\,\mat{I}}$ with norm $\norm[\mathcal{A}]{\left(\bullet\right)}^2 = \iprod{\left(\bullet\right)}{\mathcal{A}\left(\bullet\right)}$ allows for robust error control.
 \vspace{-0.25cm}
 \begin{theorem}
-    Let $\Displacement \in \HiSpace[\domain][\Gamma_\mathrm{D}][2]$ be the solution of \eqref{eq:linear_elasticity-weak}, $\Displacement_\h \in \left(\VecSpace[]{V}_{\Gamma ,k}\right)^2$ be arbitrary, and $\LinPKEqlbH$ be an equilibrated stress. For $\delta\Displacement = \Displacement - \Displacement_\h$ it holds
+    Let $\Displacement \in \HiSpace[\domain][\Gamma_\mathrm{D}][2]$ be the solution of \cref{eq:linear_elasticity-weak}, $\Displacement_\h \in \left(\VecSpace[]{V}_{\Gamma ,k}\right)^2$ be arbitrary, and $\LinPKEqlbH$ be an equilibrated stress. For $\delta\Displacement = \Displacement - \Displacement_\h$ it holds
     \begin{equation}
         \vert\vert\vert \delta\Displacement \vert\vert\vert^2 \leq \norm[\mathcal{A}]{\LinPKEqlbH - \stressPKLin(\Displacement_\h)}^2 + C_K \sum_{\mathrm{T}\in\domainH} \bracketed{\norm[\mathrm{T}]{\skw{\LinPKEqlbH}} + C_P \norm[\mathrm{T}]{\vec{f} + \div\LinPKEqlbH}}^2\; .
         \label{eq:ee_linelasticity}
@@ -148,17 +148,17 @@ While the error is measured in the energy norm $\vert\vert\vert \bullet \vert\ve
         \label{eq:proof_ee-le_eval_anorm}
     \end{equation}
     where $\delta\stressPKLin^\spEqlb$ denotes the difference between true and equilibrated stress $\stressPKLin(\Displacement) - \LinPKEqlbH$. 
-    Integration by parts considering the symmetry of the true stress and the equilibration conditions \eqref{eq:stress_eqlb_conditions} allows a reformulation of the mixed term:
+    Integration by parts considering the symmetry of the true stress and the equilibration conditions \cref{eq:stress_eqlb_conditions} allows a reformulation of the mixed term:
     \begin{equation}
         \iprod{\delta\stressPKLin^\spEqlb}{\strainGreenLagrangeLin\left(\delta\Displacement\right)} = \iprod{\vec{f} + \div\LinPKEqlbH}{\delta\Displacement} + \iprod{\skw{\LinPKEqlbH}}{\grad\delta\Displacement}\; .
         \label{eq:proof_ee-le_reformulation}
     \end{equation}
-    Based on the weak symmetry, \eqref{eq:proof_ee-le_reformulation} can be bounded from above
+    Based on the weak symmetry, \cref{eq:proof_ee-le_reformulation} can be bounded from above
     \begin{equation}
         \iprod{\delta\stressPKLin^\spEqlb}{\strainGreenLagrangeLin\left(\delta\Displacement\right)} \leq C_K \sum_{\mathrm{T}\in\domainH} \bracketed{\norm[\mathrm{T}]{\skw{\LinPKEqlbH}} + C_P \norm[\mathrm{T}]{\vec{f} + \div\LinPKEqlbH}}^2 + \norm{\strainGreenLagrangeLin\left(\delta\Displacement\right)}\; .
         \label{eq:proof_ee-le_bound_one}
     \end{equation}
-    Inserting \eqref{eq:proof_ee-le_bound_one} into \eqref{eq:proof_ee-le_eval_anorm} completes the proof.
+    Inserting \cref{eq:proof_ee-le_bound_one} into \cref{eq:proof_ee-le_eval_anorm} completes the proof.
 \end{proof}
 
 \section{Algorithms and Implementation}
@@ -178,8 +178,8 @@ Therefore, the constrained minimisation problem
     \bm{\theta}^\spEqlb_\h = \arg\underset{\vec{v} \in \feRT[m][d] \land\,\mathrm{CONSTR}}{\min} \norm{\vec{v} - \bm{\theta}_\h}
     \label{eq:eqlb_by_global_minimisation}
 \end{equation}
-is considered, where the constraints $\mathrm{CONSTR}$ and dimension $d$ follow from \Cref{def:equilibrated_flux} or \Cref{def:equilibrated_stress}.
-Since a global solution of \eqref{eq:eqlb_by_global_minimisation} is computationally too expensive, the problem is localised by introducing for each node $z$ the nodal, piece-wise linear basis function $\hatfunc$. 
+is considered, where the constraints $\mathrm{CONSTR}$ and dimension $d$ follow from \cref{def:equilibrated_flux} or \cref{def:equilibrated_stress}.
+Since a global solution of \cref{eq:eqlb_by_global_minimisation} is computationally too expensive, the problem is localised by introducing for each node $z$ the nodal, piece-wise linear basis function $\hatfunc$. 
 The support of $\hatfunc$ is denoted as patch $\patch$ and allows for the definition of the local function space
 \begin{equation*}
     \mathrm{V}_m(\patch) := \left\{\vec{v}\in\feRT[m][d]:\; \vec{v}\cdot\vec{n}=
@@ -202,7 +202,7 @@ The weak symmetry condition is enforced in a second step.
 Starting with lists of DOLFINx functions for the equilibrated fluxes $\left\{\fluxRHi\right\}$, the projected fluxes $\left\{\Pi_{m-1}\,\fluxHi\right\}$, the projected RHS $\left\{\Pi_{m-1}\,\mathrm{f}_i\right\}$, and the facets ($fct$) on the Dirichlet boundary of the primal problem $\left\{fct\in\Gamma_\mathrm{D}\right\}$, a general patch is created that must be updated for each mesh node.
 It serves as a submesh, respectively subfunction space, required for flux equilibration and enforcement of the weak symmetry condition.
 
-The following discusses the patch-local algorithms for flux equilibration \ref{alg:eqlb_se_patch_level} and enforcement of the weak symmetry condition \ref{alg:eqlb_ws_patch_level}.
+The following discusses the patch-local algorithms for flux equilibration \cref{alg:eqlb_se_patch_level} and enforcement of the weak symmetry condition \cref{alg:eqlb_ws_patch_level}.
 \begin{algorithm}
     \caption{Equilibration on the mesh level.}
     \label{alg:eqlb_mesh_level}
@@ -220,12 +220,12 @@ The following discusses the patch-local algorithms for flux equilibration \ref{a
     \For{$i = 0;\ i < n_\mathrm{nodes};\ i++$}
     {
         $patch$.create\_subdofmap($n$)\;
-        equilibrate\_flux\_semiexplt(...) \tcp*{see \Cref{alg:eqlb_se_patch_level}}
-        \textbf{if} \textit{weaksym\_stresses} \textbf{then} impose\_weak\_symmetry(...) \tcp*{see \Cref{alg:eqlb_ws_patch_level}}
+        equilibrate\_flux\_semiexplt(...) \tcp*{see \cref{alg:eqlb_se_patch_level}}
+        \textbf{if} \textit{weaksym\_stresses} \textbf{then} impose\_weak\_symmetry(...) \tcp*{see \cref{alg:eqlb_ws_patch_level}}
     }
 \end{algorithm}
 
-\textbf{Flux equilibration} requires the solution of a series of constrained minimisation problems \eqref{eq:eqlb_by_local_minimisation}.
+\textbf{Flux equilibration} requires the solution of a series of constrained minimisation problems \cref{eq:eqlb_by_local_minimisation}.
 This can be done directly\citep{Ern_FluxEqlb_2015} or by splitting the process into an explicit part followed by an unconstrained minimization \cite[Appendix A]{Bertrand_HHO_2023}. 
 Restricting this discussion to the second approach, the difference of equilibrated and approximated flux is calculated in two steps:
 \begin{equation}
@@ -246,7 +246,7 @@ The required hierarchic definition of the Raviart--Thomas space is implemented u
 
 From an algorithmic perspective, the semi-explicit equilibration is performed on each patch for multiple RHSs simultaneously.
 Beside of patches attached to the boundary $\Gamma_\mathrm{N}$, this allows one to assemble the system matrix $\mat{A}$ and compute its Cholesky decomposition only once per patch and reuse it for the different RHSs. 
-The solution procedure is detailed in \Cref{alg:eqlb_se_patch_level}.
+The solution procedure is detailed in \cref{alg:eqlb_se_patch_level}.
 \begin{algorithm}
     \caption{Function: equilibrate\_flux\_semiexplt}
     \label{alg:eqlb_se_patch_level}
@@ -304,7 +304,7 @@ the constrained solution $\left( \LinPKEqlbHzWS,\,\xi_{z,\h}\right) \in \mathrm{
 \end{equation}
 for all $\left(\tau_{z,\h},\,\gamma_{z,\h}\right) \in \mathrm{V}^\Delta_m(\patch)\times\mathrm{V}_{1,0}(\patch)$.
 
-\cite{Bertrand_EqlbElast_2021} have proven the solvability of \eqref{eq:eqlb_ws_constrmin} when patches have at least two internal facets and $k,m \geq 2$.
+\cite{Bertrand_EqlbElast_2021} have proven the solvability of \cref{eq:eqlb_ws_constrmin} when patches have at least two internal facets and $k,m \geq 2$.
 To avoid the direct solution of
 \begin{equation}
     \begin{bmatrix}
@@ -328,10 +328,10 @@ To avoid the direct solution of
     \end{bmatrix}\; ,
     \label{eq:eqs_ws_constrmin}
 \end{equation}
-the equation system resulting from the saddle point problem \eqref{eq:eqlb_ws_constrmin}, a Schur complement-based solver, is implemented. The vectors $\vec{u}_{R1}$ and $\vec{u}_{R2}$ denote the degrees of freedom (DOFs) for the rows of the stress tensor.
+the equation system resulting from the saddle point problem \cref{eq:eqlb_ws_constrmin}, a Schur complement-based solver, is implemented. The vectors $\vec{u}_{R1}$ and $\vec{u}_{R2}$ denote the degrees of freedom (DOFs) for the rows of the stress tensor.
 Reusing the Cholesky decomposition of $\mat{A}$, the Schur complement $\mat{S} = \mat{B}_1\,\mat{A}^{-1}\,\transpT{\mat{B}_1} + \mat{B}_2\,\mat{A}^{-1}\,\transpT{\mat{B}_2}$ is calculated. 
-Solving $\mat{S}\cdot\vec{c}=\vec{L}_c$ based on its LU decomposition followed by solving $\mat{A}\cdot\vec{u}_{Ri}=-\mat{B}_i\cdot\vec{c}$ is notably faster than a direct solution of \eqref{eq:eqs_ws_constrmin}. 
-This procedure is outlined in \Cref{alg:eqlb_ws_patch_level}.
+Solving $\mat{S}\cdot\vec{c}=\vec{L}_c$ based on its LU decomposition followed by solving $\mat{A}\cdot\vec{u}_{Ri}=-\mat{B}_i\cdot\vec{c}$ is notably faster than a direct solution of \cref{eq:eqs_ws_constrmin}. 
+This procedure is outlined in \cref{alg:eqlb_ws_patch_level}.
 \begin{algorithm}
     \caption{Function: impose\_weak\_symmetry}
     \label{alg:eqlb_ws_patch_level}
@@ -387,11 +387,11 @@ Two sets of parameters $\kappa_2=\kappa_4=1$ and $\kappa_1=\kappa_3$ with either
 Dirichlet BCs according to the analytical solution of \cite{Riviere_ApostPoissonCoeffDG_2003} are prescribed on $\Gamma_\mathrm{D}=\partial\Omega$.
 Meshes are refined based on a Dörfler marking strategy with $\theta=0.5$. 
 
-Convergence orders (e.o.c) and efficiency indices after the final refinement step are reported in \Cref{fig:poisson-riviere_results}, while the final meshes for the first- and second-order approximations of the case $\kappa_1=100$ are shown in \Cref{fig:poisson-riviere_refmesh-p1,fig:poisson-riviere_refmesh-p2}. 
+Convergence orders (e.o.c) and efficiency indices after the final refinement step are reported in \cref{fig:poisson-riviere_results}, while the final meshes for the first- and second-order approximations of the case $\kappa_1=100$ are shown in \cref{fig:poisson-riviere_refmesh-p1,fig:poisson-riviere_refmesh-p2}. 
 The solutions are in good agreement with the literature. 
 Meshes are refined around the singularity in the centre of the domain, and the convergence rates are $\approx-0.5$ for $\GenSolH\in\feP[1]$ and $\approx-1$ for $\GenSolH\in\feP[2]$.
 For $\kappa_1 = 100$, a convergence rate $<-1$ indicates a pre-asymptotic state of convergence.
-The efficiency of the error estimate \eqref{eq:ee_poisson-disc-kappa} depends on the degree $m$ of the equilibrated flux.
+The efficiency of the error estimate \cref{eq:ee_poisson-disc-kappa} depends on the degree $m$ of the equilibrated flux.
 Choosing $m=k+1$ yields efficiency indices close to one for $\kappa_1=5$ and between 1.2 and 1.4 for $\kappa_1=100$. 
 They are slightly worse for $m=k$.
 \begin{figure}
@@ -438,10 +438,10 @@ They are slightly worse for $m=k$.
 \label{fig:cook_definition}
 \end{wrapfigure}
 \textbf{Example 2:} Based on the Poisson equation, the influence of the equilibration order $m$ on the efficiency of the resulting estimate is shown.
-Using the Cooks membrane in \Cref{fig:cook_definition}, this analysis is extended to linear elasticity, where the symmetry of the stress tensor is considered in a weak sense.
+Using the Cooks membrane in \cref{fig:cook_definition}, this analysis is extended to linear elasticity, where the symmetry of the stress tensor is considered in a weak sense.
 This analysis considers $\Pi_1=2.333$, $t=0.03$, and adaptive meshes based on a Dörfler marking strategy with $\theta=0.6$.
-Characteristics of the first mesh satisfying $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$ are summarised in \Cref{fig:cook_results-summary}. Since $\LinPKEqlbH$ exactly fulfils the divergence condition from \Cref{def:equilibrated_stress}, $\eta$ reduces to the sum of the $\mathcal{A}$-norm of the stress difference $\LinPKEqlbH - \stressPKLin_\h$ and the norm of asymmetric part of $\LinPKEqlbH$.
-Following \Cref{fig:cook_results-summary}, the estimate is clearly dominated by the second part.
+Characteristics of the first mesh satisfying $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$ are summarised in \cref{fig:cook_results-summary}. Since $\LinPKEqlbH$ exactly fulfils the divergence condition from \cref{def:equilibrated_stress}, $\eta$ reduces to the sum of the $\mathcal{A}$-norm of the stress difference $\LinPKEqlbH - \stressPKLin_\h$ and the norm of asymmetric part of $\LinPKEqlbH$.
+Following \cref{fig:cook_results-summary}, the estimate is clearly dominated by the second part.
 Using equilibrated stresses of order $m=k+1$ increases the efficiency, with a relative reduction (compared to the case with $m=k$) comparable to those in the Poisson example.
 Increasing the accuracy of the error estimate affects the effectivity of the adaptive solution procedure -- measured by the number of degrees of
 freedom required for a certain error -- in a positive way.
@@ -452,7 +452,7 @@ A practical shortcut -- equilibration for $m=k+1$ is significantly more expensiv
     \label{eq:elasticity_heuristic-ei}
 \end{eqnarray}
 where no weak symmetry is enforced on $\LinPKEqlbH$.
-This yields efficiency indices close to one (see \Cref{fig:cook_results-summary}) and, comparing the convergence history in \Cref{fig:cook_results-convhist}, yields slightly better results as the guaranteed estimate with $m=k+1$.
+This yields efficiency indices close to one (see \cref{fig:cook_results-summary}) and, comparing the convergence history in \cref{fig:cook_results-convhist}, yields slightly better results as the guaranteed estimate with $m=k+1$.
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.4\textwidth}
@@ -479,18 +479,18 @@ This yields efficiency indices close to one (see \Cref{fig:cook_results-summary}
         \caption{}
         \label{fig:cook_results-convhist}
     \end{subfigure}
-    \caption{Effectivity of the different adaptive solution procedures for Cook's membrane: (a) summarises the results for the first mesh with $\mathrm{err} = \vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$, (b) details the convergence history (black, $k=2$; blue, $k=3$). Orders $m^*$ indicate the use of \eqref{eq:elasticity_heuristic-ei}.}
+    \caption{Effectivity of the different adaptive solution procedures for Cook's membrane: (a) summarises the results for the first mesh with $\mathrm{err} = \vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$, (b) details the convergence history (black, $k=2$; blue, $k=3$). Orders $m^*$ indicate the use of \cref{eq:elasticity_heuristic-ei}.}
     \label{fig:linelast-cook_results}
 \end{figure}
 
 Up to this point, only the accuracy of the error estimates has been compared. 
 In the following, the focus will be on the total solution time $t_\mathrm{tot}$, which comprises $t_\mathrm{prime}$ -- the time for assembly and solution, using PETSc and MUMPS, of the primal problem -- and $t_\mathrm{eqlb}$, the time to perform the equilibration.
-Comparing in a first step the relative equilibration costs $t_\mathrm{eqlb}/t_\mathrm{tot}$ for the Cook's membrane with fixed meshes in \Cref{fig:cook_performance-uniform}, one finds that -- for a primal problem of sufficient size -- $t_\mathrm{eqlb}$ is considerably smaller than $t_\mathrm{prime}$.  
-Increasing $k$ increases the effort required for equilibration, while an equilibration with $m=k+1$ is significantly more expensive than the respective lowest-order case $m=k$. Similar timings for the adaptive solution of the Cook's membrane (timings are accumulated until $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$) are summarised in \Cref{fig:cook_performance-adaptive}.
+Comparing in a first step the relative equilibration costs $t_\mathrm{eqlb}/t_\mathrm{tot}$ for the Cook's membrane with fixed meshes in \cref{fig:cook_performance-uniform}, one finds that -- for a primal problem of sufficient size -- $t_\mathrm{eqlb}$ is considerably smaller than $t_\mathrm{prime}$.  
+Increasing $k$ increases the effort required for equilibration, while an equilibration with $m=k+1$ is significantly more expensive than the respective lowest-order case $m=k$. Similar timings for the adaptive solution of the Cook's membrane (timings are accumulated until $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$) are summarised in \cref{fig:cook_performance-adaptive}.
 While the total solution time is dominated by the solution of the primal problem for the cases $k=m=2$, this trend is reversed for the more accurate (guaranteed) estimate with $k=m-1=2$.
 Even though this case has the fewest primal degrees of freedom, the entire solution time is the longest due to the high computational costs for the equilibration.
 Using primal approximations based on $k=3$ reduces the overall computation time but leads to equilibration taking up a significant share of the total computation time, an effect amplified by the small sizes of the primal problems.
-As for $k=2$, the heuristic indicator \eqref{eq:elasticity_heuristic-ei} with $m=k$ performs best, and the higher-order estimate with $m=k+1$ is outperformed.
+As for $k=2$, the heuristic indicator \cref{eq:elasticity_heuristic-ei} with $m=k$ performs best, and the higher-order estimate with $m=k+1$ is outperformed.
 These results will clearly have to be reevaluated in a parallel context -- which is beyond this chapter's current scope -- as well as for larger primal problems.
 \begin{table}[]
 \centering
@@ -525,7 +525,7 @@ These results will clearly have to be reevaluated in a parallel context -- which
         \caption{}
         \label{fig:cook_performance-adaptive}
     \end{subtable}
-    \caption{Performance measurements based on Cook's membrane. (a) The $\mathrm{ratio} = t_\mathrm{eqlb} / t_\mathrm{tot}$ as a percentage for different primal problems. (b) Accumulated timings using an adaptive algorithm until $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$. Orders $m^*$ indicate the use of \eqref{eq:elasticity_heuristic-ei}.}
+    \caption{Performance measurements based on Cook's membrane. (a) The $\mathrm{ratio} = t_\mathrm{eqlb} / t_\mathrm{tot}$ as a percentage for different primal problems. (b) Accumulated timings using an adaptive algorithm until $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$. Orders $m^*$ indicate the use of \cref{eq:elasticity_heuristic-ei}.}
     \label{fig:linelast-cook_performance}
 \end{table}
 
