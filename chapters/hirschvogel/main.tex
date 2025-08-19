@@ -25,7 +25,7 @@ The solver and preconditioning aspects of this model and other fluid dynamics pr
 
 
 \section*{Methods}
-The FrSI problem of a 3D left heart model (atrium, ventricle, aortic outflow tract) along with the underlying data sources is depicted in \Cref{fig:heart_problem}. 
+The FrSI problem of a 3D left heart model (atrium, ventricle, aortic outflow tract) along with the underlying data sources is depicted in \cref{fig:heart_problem}. 
 In particular, domain and motion data are retrieved from time-resolved dynamic CT, which are subsequently mapped to a finite element mesh to generate a discrete space of modes using POD \citep{rathinam2003}. 
 The model is further coupled to a closed-loop systemic, pulmonary, and coronary circulation system \citep{hirschvogel2017,arthurs2016} to provide physiologically meaningful cardiovascular loads to the 3D model.
 \begin{figure}[!htp]
@@ -40,7 +40,7 @@ The model is further coupled to a closed-loop systemic, pulmonary, and coronary 
 \end{figure}
 
 \subsection*{Patient Data Preprocessing }
-The FrSI approach relies on external data sourced from either some high-dimensional model or patient-specific imaging data. Here, we build a patient-specific model of the left heart by segmenting a dynamic cardiac CT dataset using 3D Slicer \citep{kikinis2014-3dslicer}; see \Cref{fig:heart_problem}A. A diastolic frame is subsequently meshed with SimModeler \citep{simmodeler}, and a motion tracking algorithm is used to extract the wall velocities at each frame and map them to the finite element mesh (with a velocity degree-of-freedom space of size $n_{v}$). Thereafter, the wall velocity data for $m=19$ frames is collected into a snapshot matrix $\hat{\boldsymbol{\mathsf{S}}} \in \mathbb{R}^{n_{v} \times m}$, and the eigenvalue problem
+The FrSI approach relies on external data sourced from either some high-dimensional model or patient-specific imaging data. Here, we build a patient-specific model of the left heart by segmenting a dynamic cardiac CT dataset using 3D Slicer \citep{kikinis2014-3dslicer}; see \cref{fig:heart_problem}A. A diastolic frame is subsequently meshed with SimModeler \citep{simmodeler}, and a motion tracking algorithm is used to extract the wall velocities at each frame and map them to the finite element mesh (with a velocity degree-of-freedom space of size $n_{v}$). Thereafter, the wall velocity data for $m=19$ frames is collected into a snapshot matrix $\hat{\boldsymbol{\mathsf{S}}} \in \mathbb{R}^{n_{v} \times m}$, and the eigenvalue problem
 \begin{align}
     (\hat{\boldsymbol{\mathsf{S}}}^{\mathrm{T}} \hat{\boldsymbol{\mathsf{S}}}) \,\boldsymbol{\uppsi}_{i} = \uplambda_{i} \,\boldsymbol{\uppsi}_{i}, \quad i = 1, \hdots, m,\label{eq:rom_eigensolve}
 \end{align}
@@ -48,7 +48,7 @@ is solved, with eigenvalues $\uplambda$ and eigenvectors $\boldsymbol{\uppsi} \i
 \begin{align}
     \boldsymbol{\upphi}_{j} = \frac{1}{\sqrt{\uplambda_{j}}} \hat{\boldsymbol{\mathsf{S}}} \boldsymbol{\uppsi}_{j}, \quad j = 1, \hdots, r_{v}, \label{eq:phi_Phi_frsi}
 \end{align}
-the first three of which are shown in \Cref{fig:heart_problem}B. A suitable Galerkin model reduction operator
+the first three of which are shown in \cref{fig:heart_problem}B. A suitable Galerkin model reduction operator
 \begin{align}
     \boldsymbol{\mathsf{V}}_{v}^{\Gamma} \in \mathbb{R}^{n_v \times (r_v + n_{v}^{\mathit{\Omega}})}, \label{eq:Vgamma}
 \end{align}

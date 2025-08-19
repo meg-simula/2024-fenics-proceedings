@@ -18,7 +18,7 @@
 Railway brake discs convert the kinetic energy of rail vehicles to thermal energy to achieve braking. This thermal energy deteriorates braking performance, and it is therefore necessary to conduct thermal analyses of brake discs. In this work, we build a finite element method (FEM) model in FEniCSx to investigate the influence of contact areas between brake pads and discs on the temperature of brake discs. The weak form of the nonlinear heat transfer equation has been derived, which accounts for conduction, convection, and radiation. Multiple Neumann boundary conditions are applied. Simulation results are validated with experimental results. With this efficient FEM model, more advanced research related to railway brake discs can be conducted, such as investigating the effect of wear and thermal expansion or designing a new geometry for brake pads and discs.
 
 \section{Introduction}
-Rail vehicles have been developed with the aim of higher speeds and higher axle loads, requiring robust mechanical brake systems for running safety. As shown in \Cref{fig:disc_block}, one of the most important mechanical brake systems is the disc brake, which converts the kinetic energy of the rail vehicle into heat. A high brake disc temperature reduces the coefficient of friction between the brake discs and the brake pads \citep{Saffar2010} and causes high thermal stress, which, in turn, induces thermal cracks on the brake discs. To avoid these negative impacts, we need to study the temperature distribution of brake discs. Experimental investigation is relatively complex and cannot obtain some parameters, whereas numerical study is an effective way to address this issue.
+Rail vehicles have been developed with the aim of higher speeds and higher axle loads, requiring robust mechanical brake systems for running safety. As shown in \cref{fig:disc_block}, one of the most important mechanical brake systems is the disc brake, which converts the kinetic energy of the rail vehicle into heat. A high brake disc temperature reduces the coefficient of friction between the brake discs and the brake pads \citep{Saffar2010} and causes high thermal stress, which, in turn, induces thermal cracks on the brake discs. To avoid these negative impacts, we need to study the temperature distribution of brake discs. Experimental investigation is relatively complex and cannot obtain some parameters, whereas numerical study is an effective way to address this issue.
 
 \begin{figure}[h]
     \centering
@@ -40,7 +40,7 @@ Heat generation and dissipation are two main parts of conducting the thermal ana
     \label{heat flux}
 \end{equation}
 
-where \( q_d \) is the heat flux in the brake discs (W/m$^2$), \( \xi \) is the heat partition coefficient, \( F_f \) is the friction force (N), \( V \) is the velocity (m/s), \( P \) is the local contact pressure between the brake pads and discs (Pa), \( A_d \) is the friction contact area of the brake pads (m$^2$), and \( \mu \) is the coefficient of friction. The Neumann boundary condition of \ref{heat equation}, which is the overall heat transfer equation, is \ref{heat flux} 
+where \( q_d \) is the heat flux in the brake discs (W/m$^2$), \( \xi \) is the heat partition coefficient, \( F_f \) is the friction force (N), \( V \) is the velocity (m/s), \( P \) is the local contact pressure between the brake pads and discs (Pa), \( A_d \) is the friction contact area of the brake pads (m$^2$), and \( \mu \) is the coefficient of friction. The Neumann boundary condition of \cref{heat equation}, which is the overall heat transfer equation, is \cref{heat flux} 
 
 The heat flux distribution between the brake pads and discs is critical, since it depends on how much heat flows to the brake discs, which affects the temperatures and stresses. This coefficient is highly nonlinear and affected by the material, temperature, and pressure. In this research, this coefficient is simplified to a constant. The distribution factor is described by \cite{rudolf_limpert_brake_1999} as
 \begin{equation}
@@ -72,7 +72,7 @@ where \( \Omega \) is the computation domain, \( \partial \Omega \) is the bound
 
 The equation above is only for heat transfer, since, for brake pad deformation, one needs to solve the elastic equation, which is not included here. The main contribution of the elastic deformation calculation is a more accurate contact area between the brake pads and the discs. In this study, we assume that the contact area is known a priori, since this research focuses on comparing the influence of different contact areas. The equations above are solved on the FEniCSx platform \citep{baratta_dolfinx_2023,scroggs_construction_2022,alnaes_unified_2014}. All the code for this paper is in \cite{zhang_thermal_2025}.
 
-The computation domain, or mesh, is shown in \Cref{fig:coarse mesh}. This is a much coarser mesh than the one with 1 million elements used later, with around 43,000 elements. The element type is the tetrahedron, since we found that, with more tetrahedron elements, the simulation can obtain the same accuracy as with hexahedral elements but with less computation time. Only the brake disc and pad are computation domains. The friction heat, or the Neumann boundary condition, is applied to the contact surface, or, more specifically, to only the rubbing elements of the brake pad areas. The rubbing elements are the column structure of the brake pad. Other boundaries include radiation and convection heat transfer, which are also the Neumann boundary conditions without the heat flux input. In each time step, the boundary conditions are redefined since the rotation will change the contact area. In reality, the brake pad should keep still while the brake disc rotates. Here, we assume only the heat flux input areas are rotating: these are the friction heat input areas.
+The computation domain, or mesh, is shown in \cref{fig:coarse mesh}. This is a much coarser mesh than the one with 1 million elements used later, with around 43,000 elements. The element type is the tetrahedron, since we found that, with more tetrahedron elements, the simulation can obtain the same accuracy as with hexahedral elements but with less computation time. Only the brake disc and pad are computation domains. The friction heat, or the Neumann boundary condition, is applied to the contact surface, or, more specifically, to only the rubbing elements of the brake pad areas. The rubbing elements are the column structure of the brake pad. Other boundaries include radiation and convection heat transfer, which are also the Neumann boundary conditions without the heat flux input. In each time step, the boundary conditions are redefined since the rotation will change the contact area. In reality, the brake pad should keep still while the brake disc rotates. Here, we assume only the heat flux input areas are rotating: these are the friction heat input areas.
 
 \begin{figure}[h]
     \centering
@@ -84,7 +84,7 @@ The computation domain, or mesh, is shown in \Cref{fig:coarse mesh}. This is a m
 
 \subsection{Experiment}
 
-The test rig mainly consists of a DC motor, flywheels, brake pads, and brake discs, as shown in \Cref{fig:test rig}. The maximum motor power is 450 kW, and the maximum motor torque is 4,000 Nm. The brake pressure at the reservoir ranges from zero to 10 bar. 
+The test rig mainly consists of a DC motor, flywheels, brake pads, and brake discs, as shown in \cref{fig:test rig}. The maximum motor power is 450 kW, and the maximum motor torque is 4,000 Nm. The brake pressure at the reservoir ranges from zero to 10 bar. 
 A total of six thermocouples measure the temperature of the brake disc, and they are located under the contact surface. A symmetric model is used in the simulation to save computational effort. The brake lag is the time it takes for the brake pressure to increase from 0\% to 95\% of the target pressure. In the test, the brake lag is 4±0.2 s, which follows the International union of railways(UIC)541-3 standard.
 \Cref{tab: operational parameters} shows the operational parameters.
 
@@ -124,7 +124,7 @@ A total of six thermocouples measure the temperature of the brake disc, and they
 \section{Results and Discussion}
 
 \subsection*{Validation}
-The first step is mesh sensitivity and time step analysis, where we aim to show that the simulation results converge with finer mesh sizes and smaller time steps. Since no exact solution exists, the average temperature of point T1, as shown in \Cref{fig:thermocouples}, is used as the convergence parameter.
+The first step is mesh sensitivity and time step analysis, where we aim to show that the simulation results converge with finer mesh sizes and smaller time steps. Since no exact solution exists, the average temperature of point T1, as shown in \cref{fig:thermocouples}, is used as the convergence parameter.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{chapters/zhang/graphics/ave_T_vs_dof.pdf}
@@ -133,7 +133,7 @@ The first step is mesh sensitivity and time step analysis, where we aim to show 
     \label{fig:error_mesh}
 \end{figure}
 
-As shown in \Cref{fig:error_mesh}, the average temperature of point 1 increases with more DOFs, up to 1 million DOFs. Above 1 million, however, the temperature remains constant. These results show that above 1 million DOFs is sufficient to capture the characteristics of the system. 
+As shown in \cref{fig:error_mesh}, the average temperature of point 1 increases with more DOFs, up to 1 million DOFs. Above 1 million, however, the temperature remains constant. These results show that above 1 million DOFs is sufficient to capture the characteristics of the system. 
 \begin{figure}[h]
     \centering
   
@@ -154,7 +154,7 @@ As shown in \Cref{fig:error_mesh}, the average temperature of point 1 increases 
     \label{fig:experiment}
 \end{figure}
 
-Except for the mesh and time sensitivity analysis, the simulation results are validated against the experiment, as shown in \Cref{fig:experiment}. The general trends of the case of 1.2 million elements (4.7 million DOFs) and the measurement data are the same, so we deem the simulation's accuracy acceptable. However, there is still much room to improve the accuracy, such as by introducing nonlinear material properties. These parameters, such as thermal conductivity, heat capacity, and the coefficient of friction, are all non-constant or linear functions of temperature, velocity, and pressure. Determining the exact material characteristics is difficult, so better numerical results can be obtained from tribology and material engineering research. More detailed experiment parameters, such as loading pressure, would also significantly improve the numerical results, since the experimental test results also feature large variances.
+Except for the mesh and time sensitivity analysis, the simulation results are validated against the experiment, as shown in \cref{fig:experiment}. The general trends of the case of 1.2 million elements (4.7 million DOFs) and the measurement data are the same, so we deem the simulation's accuracy acceptable. However, there is still much room to improve the accuracy, such as by introducing nonlinear material properties. These parameters, such as thermal conductivity, heat capacity, and the coefficient of friction, are all non-constant or linear functions of temperature, velocity, and pressure. Determining the exact material characteristics is difficult, so better numerical results can be obtained from tribology and material engineering research. More detailed experiment parameters, such as loading pressure, would also significantly improve the numerical results, since the experimental test results also feature large variances.
 
 
 
