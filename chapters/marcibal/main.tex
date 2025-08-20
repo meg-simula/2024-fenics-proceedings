@@ -44,12 +44,12 @@ Consider the incompressible Navier--Stokes (NS) equations
     \end{split}
 \end{equation}
 where $\mathbf{u}$ and $p$ are the instantaneous velocity and pressure, respectively; $\mathbf{f}$ represents external forces; and $\rho$ is the density and $\nu$ is the molecular viscosity of the fluid.
-It is well known that solving \eqref{eq:NS} numerically becomes difficult with increasing Reynolds numbers.
+It is well known that solving \cref{eq:NS} numerically becomes difficult with increasing Reynolds numbers.
 To accurately predict turbulent flow, we either need to work with a very fine mesh and small step sizes or resort to modelling.
 The former is often not feasible without a large amount of computational power.One approach to modelling turbulence is to consider not the instantaneous $\mathbf{u}$ and $p$ but, rather, the mean values $\langle \mathbf{u} \rangle$ and $ \langle p \rangle$.
 By decomposing $\mathbf{u}$ and $p$ into their mean and fluctuating parts $\mathbf{u} = \langle \mathbf{u} \rangle + \mathbf{u}'$ and $p = \langle p \rangle + p'$, one can derive governing equations for the mean quantities.
 Such equations are called the Reynolds-averaged NS (RANS) equations, and they take the form
-\begin{equation}\label{eq: RANS}
+\begin{equation}\label{eq:RANS}
     \begin{split}
         \frac{\partial \langle \mathbf{u} \rangle}{\partial t} + \langle \mathbf{u} \rangle \cdot \nabla{\langle \mathbf{u} \rangle}
         = 
@@ -80,7 +80,7 @@ Modelling turbulence now reduces to modelling $\nu_t$ and $k$, usually by solvin
 \subsection{The Lam--Bremhorst $k$-$\varepsilon$ Model and Boundary Conditions}
 The Lam--Bremhorst (LB) $k$-$\varepsilon$ model \citep{lam_modified_1981} is one of the models proposed to close the RANS equations.
 It was chosen for its relative simplicity compared to more popular models such as that proposed by \cite{launder_application_1974}.
-Formulated in \eqref{eq:k-eps}, it supplements \eqref{eq: RANS} and \eqref{eq:Boussinesq_hypothesis} with two additional transport equations governing $k$ and $\varepsilon$ (the dissipation of $k$).
+Formulated in \cref{eq:k-eps}, it supplements \cref{eq:RANS,eq:Boussinesq_hypothesis} with two additional transport equations governing $k$ and $\varepsilon$ (the dissipation of $k$).
 Together, these equations form a closed system that describes the mean behaviour of turbulent flow:
 \begin{equation}\label{eq:k-eps}
     \begin{split}
@@ -137,7 +137,7 @@ Together, these equations form a closed system that describes the mean behaviour
         \sigma_\varepsilon = 1.3,
     \end{split}
 \end{equation}
-where \eqref{eq:k-eps}, $\mathbf{u}$ and $p$ are the mean velocity and pressure (for better readability we no longer denote averages with $\langle \cdot \rangle$); $k$ and $\varepsilon$ are the turbulent kinetic energy and its dissipation, respectively; and $\rho$, $\nu$, and $\mathbf{f}$ are as in \eqref{eq:NS}.
+where \cref{eq:k-eps}, $\mathbf{u}$ and $p$ are the mean velocity and pressure (for better readability we no longer denote averages with $\langle \cdot \rangle$); $k$ and $\varepsilon$ are the turbulent kinetic energy and its dissipation, respectively; and $\rho$, $\nu$, and $\mathbf{f}$ are as in \cref{eq:NS}.
 Additionally, $\nu_t$ is the turbulent viscosity, and $P_k$ and $\gamma$ are the production and reaction terms of $k$. In addition, $f_\nu$, $f_1$ and $f_2$ are the damping functions, which solve the models' inability to predict flow near the wall \citep{greenshields_notes_2022}.
 The terms $\text{Re}_k$ and $\text{Re}_\ell$ are both referred to as the turbulent Reynolds numbers, and $y$ denotes the distance to the nearest solid wall. Lastly, $C_\nu$, $C_1$, and $C_2$ and $\sigma_1$ and $\sigma_2$ are experimentally determined model constants.
 Since the RANS and NS equations are the same but with different total pressure and total viscosity terms, they also have similar boundary conditions.
@@ -178,7 +178,7 @@ For the steady-state version, Picard iteration is used.
 \subsection{Weak Formulation of the \texorpdfstring{$k$-$\varepsilon$}{k-e} Transport Equations}
 To derive the weak formulation for the $k$ equation, we first approximate the temporal derivative $\partial k / \partial t$ by its finite difference approximation.
 The entire equation is then multiplied by a test function $\varphi$.
-Lastly, the divergence theorem is applied to the diffusion term, and zero Neumann boundary conditions are considered, resulting in \eqref{eq:Transport_equation_for_k}.
+Lastly, the divergence theorem is applied to the diffusion term, and zero Neumann boundary conditions are considered, resulting in \cref{eq:Transport_equation_for_k}.
 The weak formulation then reads as follows: at each time step $n+1$, find $k^{n+1} \in V_{k,\triangle} \subseteq V_k = H^1(\Omega)$ such that
 \begin{equation}\label{eq:Transport_equation_for_k}
     \begin{split}
@@ -219,8 +219,8 @@ This results in a formulation that more closely resembles ones in the literature
 The $k$-$\varepsilon$ model, as formulated in this article, solves the governing equations up to solid walls.
 As we will see in \cref{sec:results}, the turbulent quantities $k$ and $\varepsilon$ display strong sensitivity and fluctuations in this region, especially in the region where the value of $y^+$ is less than five (called the viscous sublayer).
 It is essential that the model capture this behaviour, and a fine enough mesh is therefore required.
-Given a desired non-dimensionalized value $d^+$, we can construct a mesh such that, for each element that lies on the solid wall, the non-dimensionalized distance $y^+$ between the wall and the farthest point from the wall in the element is less than $d^+$, by computing the actual distance $y$ from \eqref{eq:non-dimensionalized variables}.
-The problem is that the wall shear stress $\tau_\text{w}$, used in \eqref{eq:non-dimensionalized variables}, is not generally known beforehand and must be estimated.
+Given a desired non-dimensionalized value $d^+$, we can construct a mesh such that, for each element that lies on the solid wall, the non-dimensionalized distance $y^+$ between the wall and the farthest point from the wall in the element is less than $d^+$, by computing the actual distance $y$ from \cref{eq:non-dimensionalized variables}.
+The problem is that the wall shear stress $\tau_\text{w}$, used in \cref{eq:non-dimensionalized variables}, is not generally known beforehand and must be estimated.
 In short, for pressure-driven turbulent flow, the wall shear stress can be estimated by plugging the solution for Hagen--Poiseuille flow into the definition of $\tau_\text{w}$.
 For flow with a prescribed inflow velocity profile, see \cite{noauthor_cfd_nodate}.
 For simple geometries, such as channel flow, the distance from the wall $y$ can be computed explicitly.
@@ -231,8 +231,8 @@ For more complex geometry, $y$ must be estimated, for example, by solving the so
 In this section, we present the results obtained for two test cases, namely, fully developed turbulent channel flow and flow around a backward-facing step.
 Complete datasets, meshes, code, and one different case for further exploration are available on the GitHub page of one of the authors (\href{https://github.com/joove123/k-epsilon}{https://github.com/joove123/k-epsilon})
 \subsection{Fully Developed Turbulent Channel Flow}
-Fully developed turbulent channel flow is high-$\text{Re}$ flow between two infinitely long plates, approximated with a finite mesh of length $L$ by imposing periodic boundary conditions, separated by a distance $2H$, as seen in \Cref{fig:fully_developed_turbulent_channel_flow}.
-Flow is driven by a constant negative pressure gradient in the direction of the flow, achieved by prescribing $p$ on the inflow and the outflow, as seen in \Cref{fig:fully_developed_turbulent_channel_flow}.
+Fully developed turbulent channel flow is high-$\text{Re}$ flow between two infinitely long plates, approximated with a finite mesh of length $L$ by imposing periodic boundary conditions, separated by a distance $2H$, as seen in \cref{fig:fully_developed_turbulent_channel_flow}.
+Flow is driven by a constant negative pressure gradient in the direction of the flow, achieved by prescribing $p$ on the inflow and the outflow, as seen in \cref{fig:fully_developed_turbulent_channel_flow}.
 The relative simplicity of this essentially one-dimensional problem makes it a perfect test case for the model's verification.
 Even though the problem attains a steady solution, a transient solver was used to verify its implementation.
 \begin{figure}[htbp]
@@ -282,7 +282,7 @@ The simulation is run at $\text{Re}_\tau = 550$.
     \label{fig:fully_developed_turbulent_channel_flow}
 \end{table}
 To verify the model's accuracy, numerical results are compared to a direct numerical simulation performed by \cite{lee_direct_2015}.
-The same simulation is conducted for a series of meshes with various values of $d^+$ ranging from $16$ to $0.5$ (with smaller values indicating a finer mesh), with the results provided in \Cref{fig:channel_flow_profiles} (for better clarity, the results corresponding to some values of $d^+$ are not shown).
+The same simulation is conducted for a series of meshes with various values of $d^+$ ranging from $16$ to $0.5$ (with smaller values indicating a finer mesh), with the results provided in \cref{fig:channel_flow_profiles} (for better clarity, the results corresponding to some values of $d^+$ are not shown).
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.825\textwidth]{channel flow-profiles.pdf}
@@ -290,14 +290,14 @@ The same simulation is conducted for a series of meshes with various values of $
     \caption{Comparison of velocity (top) and turbulent kinetic energy (bottom) profiles obtained on meshes with different resolutions with direct numerical simulation (left), together with close-up plots (right).}
     \label{fig:channel_flow_profiles}
 \end{figure}
-Considering the solution profiles from \Cref{fig:channel_flow_profiles} and the fact that the fields are most sensitive in the viscous sublayer, we feel that a value of $d^+ = 2$ strikes a good balance between computational efficiency and numerical accuracy.
+Considering the solution profiles from \cref{fig:channel_flow_profiles} and the fact that the fields are most sensitive in the viscous sublayer, we feel that a value of $d^+ = 2$ strikes a good balance between computational efficiency and numerical accuracy.
 In particular, the number of elements in this mesh is $864$.
 The velocity and pressure spaces have $3,480$ and $511$ degrees of freedom, respectively. On the other hand, both the $k$ and $\varepsilon$ function spaces have $438$ degrees of freedom.
 Since the results for meshes with values $d^+ = 2$ and $d^+ = 0.5$ do not differ dramatically, the former value will also be used when constructing a mesh for the next flow case.
 
 \subsection{Flow over a Backward-Facing Step}
 Flow over a backward-facing step occurs when a fluid flows over a sudden expansion, creating a separated flow region and a complex recirculation zone downstream of the step.
-The domain and boundary conditions are constructed such that they match the data from the experiment performed by \cite{driver_features_1985}, which can be seen in \Cref{fig:backward_facing_step} and \Cref{tab: boundary conditions for the backward facing step}, respectively.
+The domain and boundary conditions are constructed such that they match the data from the experiment performed by \cite{driver_features_1985}, which can be seen in \cref{fig:backward_facing_step} and \cref{tab: boundary conditions for the backward facing step}, respectively.
 This is a significantly more complex scenario than the channel flow, making it a perfect model validation case.
 Because of the mesh size, a steady-state solver was used.
 \begin{figure}[htbp]
@@ -391,7 +391,7 @@ The model's accuracy is verified using experimental data from \cite{driver_featu
 A key measure of success is the accurate prediction of the reattachment point downstream of the step.
 This is determined by measuring the point $\hat{x}$ where the skin friction coefficient ($C_f$) is equal zero.
 This was achieved in the experiment by using a laser oil flow interferometer. Another measure for analysing the results is the pressure coefficient ($C_p$).
-The results in \Cref{fig:backstep_coefficients} show a poor match between the simulation and the experiment, with the reattachment point observed at $\hat{x} = 6.26 h$, compared to the simulation's $\hat{x} = 5.0 h$.
+The results in \cref{fig:backstep_coefficients} show a poor match between the simulation and the experiment, with the reattachment point observed at $\hat{x} = 6.26 h$, compared to the simulation's $\hat{x} = 5.0 h$.
 However, this discrepancy is expected from the $k$-$\varepsilon$ model, which is known to struggle with separation and adverse pressure gradients.
 When compared to results in \cite{steffen_jr._critical_1993} with multiple versions of the $k$-$\varepsilon$ model, with reattachment points ranging from $\hat{x} = 4.9$ to $\hat{x} = 5.5$, we see a better match.
 
