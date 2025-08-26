@@ -27,7 +27,6 @@
 \usepackage{doi}             % makes hyperlinks out of doi in bib
 
 \usepackage{kantlipsum}
-\usepackage{cleveref}
 \usepackage{wrapfig}
 
 \let\Bbbk\relax              % MER: Fixes compilation error
@@ -40,6 +39,28 @@
 \makeindex             % used for the subject index
                        % please use the style svind.ist with
                        % your makeindex program
+
+                       
+\usepackage{cleveref} % Load cleverref after packages to support algorithm
+
+\crefname{chapter}{Chap.}{Chaps}
+\Crefname{chapter}{Chapter}{Chapters}
+\crefname{section}{Sect.}{Sects.}
+\Crefname{section}{Section}{Sections}
+\crefname{figure}{Fig.}{Figs.}
+\Crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\Crefname{table}{Table}{Tables}
+\crefname{volume}{Vol.}{Vols.}
+\Crefname{volume}{Volume}{Volumes}
+\crefname{equation}{}{}
+\Crefname{equation}{Equation}{Equations}
+\crefname{algorithm}{Alg.}{Algs.}
+\Crefname{algorithm}{Algorithm}{Algorithms}
+\crefname{definition}{Def.}{Defs.}
+\Crefname{definition}{Definition}{Definitions}
+\crefname{listing}{code listing}{code listings}
+\Crefname{listing}{Code Listing}{Code Listings}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
