@@ -32,14 +32,14 @@ before. I have had the pleasure to attend almost all of the FEniCS conferences,
 with just a few exceptions.
 
 FEniCS was one of the first software projects to address the automation of
-computational mathematical modeling \cite{lrsBIBih}. This includes tools to
-generate key components of scientific simulation software as well as complete
-end-user systems based on these tools. Users can then write codes to solve
-challenging problems in fluid dynamics, heat transfer, advanced materials, and
-many other areas, including what is now known as multiphysics. Novice users at
-have been able to assemble codes for complex simulations using novel models
-with little help from developers. Initially, such help came primarily via
-e-mail, but today online forums such as Discourse are used.
+computational mathematical modeling. This includes tools to generate key
+components of scientific simulation software as well as complete end-user
+systems based on these tools. Users can then write codes to solve challenging
+problems in fluid dynamics, heat transfer, advanced materials, and many other
+areas, including what is now known as multiphysics. Novice users at have been
+able to assemble codes for complex simulations using novel models with little
+help from developers. Initially, such help came primarily via e-mail, but today
+online forums such as Discourse are used.
 
 One feature of FEniCS was that it encouraged open publication of the algorithms
 behind the software. This provided academic recognition that is missing from
@@ -63,22 +63,17 @@ today.
 FEniCS, Firedrake and DUNE rely on the Unified Form Language (UFL) to provide a
 language to express simulation models based on the variational form of partial
 differential equations (PDEs). This possibility was already recognized in the
-first edition of the book ~\cite{lrsBIBcq} at the end of the first paragraph in
-Chapter 0. This observation was, a decade later, demonstrated in the system
-Analysa~\cite{lrsBIBfo}. Analysa~\cite{lrsBIBfo} provided only a limited family
-of finite elements, including arbitrary-order Lagrange elements, automatically
-by a specific algorithm. One feature of Analysa that is not yet replicated in
-FEniCS (or Firedrake) is an algebra of domains and corresponding finite element
-spaces. It was possible in Analysa to define a space of functions on the
-boundary, on the interior, and to define linear functionals and matrices
-related to these spaces. This provided a way to implement the linear algebra
-for problem solution precisely. Perhaps such functionality can appear in future
-automated PDE software.
-
-A different approach to a language for PDEs appeared earlier in the finite
-difference language FIDIL~\cite{hilfinger1989fidil}. NGSolve has also developed
-its own syntax, similar to UFL, with solvers relatively straightforward to port
-from one code to another.
+first edition of \emph{The Mathematical Theory of Finite Element Methods} at
+the end of the first paragraph in Chapter 0. This observation was, a decade
+later, demonstrated in the system Analysa. Analysa provided only a limited
+family of finite elements, including arbitrary-order Lagrange elements,
+automatically by a specific algorithm. One feature of Analysa that is not yet
+replicated in FEniCS (or Firedrake) is an algebra of domains and corresponding
+finite element spaces. It was possible in Analysa to define a space of
+functions on the boundary, on the interior, and to define linear functionals
+and matrices related to these spaces. This provided a way to implement the
+linear algebra for problem solution precisely. Perhaps such functionality can
+appear in future automated PDE software.
 
 One valuable aspect of FEniCS and related solvers is that they allow algorithm
 developers a way to make their advances available to a wide audience. A code
@@ -90,7 +85,7 @@ FEniCS has allowed the development and testing of new ideas by a very large
 community, including people with minimal software engineering training. Often a
 new technique can be tested numerically before expending the effort to
 understand the new method analytically. For example, the Robin method described
-in \cite{lrsBIBig} was first tested on a simple problem before attempting to
+in the aformentioned book was first tested on a simple problem before attempting to
 show that the method was well posed. In fact, the proof of that took
 significant time, since it required discovering a new approach to analyzing
 finite element methods. Without the assurance that the method actually worked
