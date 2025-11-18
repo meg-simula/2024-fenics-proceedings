@@ -2,7 +2,7 @@
 
 ## Updates
 
-- 18th November 2025: The current version on `main` has been submitted to the Simula SpringerBrief publication team.
+- 18th November 2025: The current version on `main` has been submitted to the Springer publication team.
 - 7th May 2025: The accepted articles have now been submitted to the Simula SpringerBrief Editorial team for review.
 
 ## About the proceedings 
