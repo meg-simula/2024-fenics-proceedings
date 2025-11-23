@@ -105,6 +105,7 @@ The FEniCS Project components are written in a mixture of Python, 'modern' C++20
 structures and computationally intensive algorithms written in C and C++.
 
 \begin{table}
+    \resizebox{\columnwidth}{!}{%
   \footnotesize
   \renewcommand{\arraystretch}{1.5}
   \begin{tabular}{l|l|l}
@@ -114,6 +115,7 @@ structures and computationally intensive algorithms written in C and C++.
     Memory                    & \makecell[l]{256 GB DDR4 \\ 3200 MT/s = 25.6 GB/s \\ 8 non-uniform memory access (NUMA) nodes} & \makecell[l]{128 GB DDR5 \\ 4800 MT/s = 38.4 GB/s  \\ Uniform memory access (no NUMA) } \\ \hline
     Total mem. bandwidth      & 2 x 200 GB/s                                                       & 1 x 300 GB/s  \\ \hline
   \end{tabular}
+    }
   \vspace{5pt}
   \caption{Configuration of the Aion nodes (University of Luxembourg's HPC facilities) and
 	AWS c7g (Amazon) instances. The c7gn instance used in the Poisson weak
