@@ -190,8 +190,6 @@ is required to understand the potential and determine missed optimizations.
 \lstset{style=CStyle}
 \begin{lstlisting}[language=c,
     caption=Abbreviated FFCx-generated finite element kernel
-    basicstyle=\ttfamily\scriptsize,
-    keywordstyle=\ttb\color{deepblue}\scriptsize,
     label=lst:c-code]
 void kernel(double* restrict A, const double* restrict w, ...){
     // 1. Static arrays of basis functions and quadrature weights.
@@ -319,9 +317,7 @@ compiler auto-vectorization. Moreover, for higher-order
 discretization, there is potential for exploiting wider SVE registers (up to 2,048 bits).
 
 An assembly excerpt for the coefficient evaluation is shown below.
-\begin{lstlisting}[
-    basicstyle=\ttfamily\footnotesize,
-    keywordstyle=\ttb\color{deepblue}\footnotesize]
+\begin{lstlisting}
 ld1d    {z0.d}, p0/z, [x7, x0, lsl #3]
 ld1d    {z25.d}, p0/z, [x3, x0, lsl #3]
 fmla    z3.d, p0/m, z25.d, z0.d
