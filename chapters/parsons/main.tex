@@ -359,14 +359,14 @@ potential is controlled (Dirichlet boundary condition), and the bulk
 solution is represented by a zero Neumann condition (zero net charge, zero electric
 field) at  a distance of 10 nm (~30 Debye lengths for the 1M
 electrolyte). Nonlinear solutions are computed using FEniCSx's
-\texttt{NonlinearProblem} with a standard Newton solver. The convergence criterion
+\pythoninline{NonlinearProblem} with a standard Newton solver. The convergence criterion
 is set to DOLFINx's default 'incremental' method with absolute
 tolerance $10^{-5}$.
 We set PETSc options \citep{PETSc_manual,petsc4py_2011} configuring the solver to use the LU direct
 solver provided by MUMPS \citep{MUMPS_2001,MUMPS_2019}, with the PETSc Krylov type set to apply the
-preconditioner only once (\verb|ksp_type=preonly|, \verb|pc_type=lu|,  \verb|pc_factor_mat_solver_type=mumps|).
+preconditioner only once (\pythoninline{ksp_type="preonly"}, \pythoninline{pc_type="lu"},  \pythoninline{pc_factor_mat_solver_type="mumps"}).
 By contrast, for instance, a
-conjugate gradient solver (\verb|ksp_type=cg|, \verb|pc_type=gamg|)
+conjugate gradient solver (\pythoninline{ksp_type="cg"}, \pythoninline{pc_type="gamg"})
 generates a spurious oscillatory electrostatic potential profile with electrode
 potentials higher than 0.1 V.
 
@@ -520,7 +520,7 @@ that our formulation, quadratic in the hct term, approximates a more
 optimal exponential (or
 sigmoidal) rise rate.
 
-\subsubsection{Optimal Throttling}
+\paragraph{Optimal Throttling}
 An example of
 the throttle rate against the number of iterations is presented in
 \cref{fig:throttle_rate} for 1 V and 10 V boundaries with different
@@ -580,7 +580,7 @@ iterations remains the same. The optimal $r(V)$ can be considered to be universa
 \label{fig:best_throttle_rate}
 \end{figure}
 
-\subsubsection{Adaptive Throttle Rate}
+\paragraph{Adaptive Throttle Rate}
 The trend in the best-performing $r$ values shown in \cref{fig:best_throttle_rate} suggests that an
 optimal multiplier follows
 $r \propto \ln V$, indicating that $r$ 

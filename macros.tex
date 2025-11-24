@@ -173,18 +173,16 @@
 % Make breakline arrow non-selectable
 
 \lstdefinestyle{CStyle}{
-  language=c++,
-  basicstyle=\ttfamily ,
-  keywordstyle=\ttb\color{deepblue},
-  emph={class},
-  emphstyle=\ttb\color{deepred},
-  stringstyle=\color{deepgreen},
-  commentstyle=\color{blue},
-  columns=fullflexible,
+  belowcaptionskip=1\baselineskip,
+  breaklines=true,
+  xleftmargin=\parindent,
+  language=C++,
   frame=single,
   showstringspaces=false,
-  backgroundcolor = \color{codebox},
-  breaklines=true,
-  postbreak=\raisebox{0ex}[0ex][0ex]{\BeginAccSupp{ActualText={}}\ensuremath{\color{gray}\hookrightarrow}\EndAccSupp{}}
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{green!40!black},
+  commentstyle=\itshape\color{purple!40!black},
+  identifierstyle=\color{black},
+  stringstyle=\color{orange},
 }
 

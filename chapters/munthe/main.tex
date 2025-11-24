@@ -116,9 +116,11 @@ where $u$, $v$, and $w$ are the displacement in the $x$, $y$, and $z$ directions
 In this paper, we compare five growth models that we have taken from \cite{Taber1998,Kroon2009,Goktepe,Kerckhoffs2012}. The growth models are presented in \cref{tab:growth models}, where the LT2 model is from \cite{Taber1998}, the KFR model is from \cite{Kroon2009}, the GEG and GCG models are from \cite{Goktepe}, and the KOM model is from \cite{Kerckhoffs2012}. Each growth model has a set point that determined the homeostatic level of either stress, stretch, or strain. When the stress, stretch, or strain reaches the set point, growth will cease to occur. If this does not happen, the body will grow indefinitely, which we call runaway growth. We used the same variables as in the original works, except for the GCG model, where we scale the variables to more accurately fit the shear modulus used here. The values are tabulated in \cref{tab:parameters}.
 %\newgeometry{right=1cm, left=1cm}%,right=1cm,top=1cm,bottom=1cm}
 \begin{table}
-\centering
-\makebox[\textwidth][c]{
-\renewcommand{\arraystretch}{4}
+    \centering
+    \makebox[\textwidth][c]{
+        \renewcommand{\arraystretch}{4}
+        \rotatebox{90}{
+        % \resizebox{\columnwidth}{!}{%
 \begin{tabular}{|c||c|c|c|}
 \hline \hline
  & $F_{g,f}^{i+1}$ & $F_{g,n}^{i+1}$ & $F_{g,c}^{i+1}$ \\
@@ -144,12 +146,14 @@ KOM & $\displaystyle \begin{cases}
 \hline
 \end{tabular}
 }
+    }
 \caption{The terms $F_{g,f}$, $F_{g,c}$, and $F_{g,n}$  for each of the five models. The parameters $T$, $\beta$, $\tau$, and $\Delta t$ simply determine the rate of growth and can be tuned to match the growth rate of the data obtained from experiments.}
 \label{tab:growth models}
 \end{table}
 %\restoregeometry
 \begin{table}[htbp]
     \centering
+    \resizebox{\columnwidth}{!}{%
     \begin{tabular}{|l|l|}
     \hline
     \textbf{Model} & \textbf{Parameters} \\
@@ -162,6 +166,7 @@ KOM & $\displaystyle \begin{cases}
         & $c_\mathrm{f} = 75$, $s_\mathrm{t50} = 0.07$, $F_\mathrm{cc50} = 1.28$, $c_\mathrm{th,slope} = 60$, $E_{ff,\mathrm{set}} = 0$, 
         $E_\mathrm{cross,\mathrm{set}} = 0$, $\Delta t = 10^{-2}$ [days] \\ \hline
     \end{tabular}
+    }
     \caption{Model parameters for the growth models. The terms $T$, $\beta$, $\tau$, and $\Delta t$ determine the speed of growth.}
     \label{tab:parameters}
 \end{table}
