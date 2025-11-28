@@ -5,9 +5,10 @@
 \author{Juraj Marcibál and Hans Joachim Schroll}
 \authorrunning{J.~Marcibál, H.~J.~Schroll}
 \institute{
-J.~Marcibál \email{juraj.marcibal@gmail.com},
-H.~J.~Schroll \email{achim@imada.dk}
-\at Department of Mathematics and Computer Science, University of Southern Denmark, Odense, Denmark}
+J.~Marcibál \email{juraj.marcibal@gmail.com} at \at Department of Mathematics and Computer Science, University of Southern Denmark, Odense, Denmark,
+\and
+H.~J.~Schroll \email{achim@imada.dk} \at Department of Mathematics and Computer Science, University of Southern Denmark, Odense, Denmark
+}
 
 \maketitle
 % ---- Article starts here ---- 
@@ -232,7 +233,7 @@ In this section, we present the results obtained for two test cases, namely, ful
 Complete datasets, meshes, code, and one different case for further exploration are available on the GitHub page of one of the authors (\href{https://github.com/joove123/k-epsilon}{https://github.com/joove123/k-epsilon})
 \subsection{Fully Developed Turbulent Channel Flow}
 Fully developed turbulent channel flow is high-$\text{Re}$ flow between two infinitely long plates, approximated with a finite mesh of length $L$ by imposing periodic boundary conditions, separated by a distance $2H$, as seen in \cref{fig:fully_developed_turbulent_channel_flow}.
-Flow is driven by a constant negative pressure gradient in the direction of the flow, achieved by prescribing $p$ on the inflow and the outflow, as seen in \cref{fig:fully_developed_turbulent_channel_flow}.
+Flow is driven by a constant negative pressure gradient in the direction of the flow, achieved by prescribing $p$ on the inflow and the outflow, as seen in \cref{tab:fully_developed_turbulent_channel_flow}.
 The relative simplicity of this essentially one-dimensional problem makes it a perfect test case for the model's verification.
 Even though the problem attains a steady solution, a transient solver was used to verify its implementation.
 \begin{figure}[htbp]
@@ -279,7 +280,7 @@ The simulation is run at $\text{Re}_\tau = 550$.
     \end{tabular}
     \captionsetup{width=0.85\textwidth}
     \caption{Boundary conditions for turbulent channel flow.}
-    \label{fig:fully_developed_turbulent_channel_flow}
+    \label{tab:fully_developed_turbulent_channel_flow}
 \end{table}
 To verify the model's accuracy, numerical results are compared to a direct numerical simulation performed by \cite{lee_direct_2015}.
 The same simulation is conducted for a series of meshes with various values of $d^+$ ranging from $16$ to $0.5$ (with smaller values indicating a finer mesh), with the results provided in \cref{fig:channel_flow_profiles} (for better clarity, the results corresponding to some values of $d^+$ are not shown).
