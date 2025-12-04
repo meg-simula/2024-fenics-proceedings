@@ -55,7 +55,7 @@ Various software packages have been proposed, while the latest trend -- followed
 It is well known that, in general domains, numerical solutions often lack the regularity required to directly apply a priori estimates. 
 To maintain optimal convergence, adaptive procedures based on a posteriori error estimates combined with local mesh refinement have been developed. 
 FEniCS is currently well-suited for handling residual-based error estimators, error estimates based on the strategy of Bank and Weiser, proposed by \cite{Bulle_BankWeiserApeFenics_2021} or automated, goal-oriented strategies introduced by \cite{Rognes_AutomatedEE_2013}, making it a valuable tool for many adaptive finite element methods. 
-However, a posteriori error estimates based on the equilibration of flux or stress lead to guaranteed, fully localised and easily computable error upper bounds, especially in the energy norm, are not yet available.
+However, a posteriori error estimates based on the equilibration of flux or stress leading to guaranteed, fully localised and easily computable error upper bounds, especially in the energy norm, are not yet available.
 Rooted in the hypercircle identity of \cite{Prager_Equilibartion_1947}, the Poisson problem is discussed in works such as \cite{Braess_EqlbFluxes_2008}, \cite{Cai_SemiexplzEqlb_2012}, \cite{Ern_FluxEqlb_2015}, or \cite{Bertrand_Hypercircle_2020}, while applications to linear elasticity can be found, for example, in \cite{Bertrand_EqlbElast_2021}.
 To address this gap, dolfinx\_eqlb, a library for the computation of equilibrated fluxes and stresses, is introduced.
 Following the philosophy of the FEniCS project, performance-relevant routines are written in C++ and can be used in Python via appropriate bindings. 
@@ -96,7 +96,7 @@ For any arbitrary $\GenSolH \in \VecSpace[]{V}_{\Gamma ,k}$ and any equilibrated
     \iprod{\delta\flux}{\grad\delta\GenSol} = \iprodS[\partial\domain]{\delta\flux\cdot\vec{n}}{\delta\GenSol} - \iprod{\div\delta\flux}{\delta\GenSol} = 0
     \label{eq:prager_synge_identity}
 \end{equation}
-holds. The differences $\delta\flux$ and $\delta\GenSol$ denote $\flux(\GenSol) - \fluxR$ respectively $\GenSol - \GenSolH$. Further introducing the Raviart--Thomas space of order $m$, $\feRT[m]$, one finds an upper bound on the error in a scaled $\mathrm{H}^1$ norm to hold.
+holds. The differences $\delta\flux$ and $\delta\GenSol$ denote $\flux(\GenSol) - \fluxR$ and $\GenSol - \GenSolH$, respectively. Further introducing the Raviart--Thomas space of order $m$, $\feRT[m]$, one finds an upper bound on the error in a scaled $\mathrm{H}^1$ norm to hold.
 \begin{theorem}
     Let $\kappa$ be piecewise constant, $\GenSol \in \HiSpace[\domain][\Gamma_\mathrm{D}]$ be the solution of \cref{eq:poisson_weak}, $\GenSolH \in \VecSpace[]{V}_{\Gamma ,k}$ be arbitrary, and $\fluxRH\in\feRT[m]$ be an equilibrated flux. Then
     \begin{equation}
@@ -109,7 +109,7 @@ holds. The differences $\delta\flux$ and $\delta\GenSol$ denote $\flux(\GenSol) 
 \vspace{-0.7cm}
 A proof can be found in \cite{Cai_SemiexplzEqlb_2012}.
 
-\textbf{Equilibration in the presence of the symmetric gradient} $\strainGreenLagrangeLin(\Displacement) = \sym{\grad\Displacement}$ considers the linearized Piola--Kirchhoff stress $\stressPKLin(\Displacement) = 2\strainGreenLagrangeLin(\Displacement) + \tilde{\Lamei}\,\div\Displacement\,\mat{I}$, which enters the balance of linear momentum
+\textbf{Equilibration in the presence of the symmetric gradient} $\strainGreenLagrangeLin(\Displacement) = \sym{\grad\Displacement}$ considers the linearised Piola--Kirchhoff stress $\stressPKLin(\Displacement) = 2\strainGreenLagrangeLin(\Displacement) + \tilde{\Lamei}\,\div\Displacement\,\mat{I}$, which enters the balance of linear momentum
 \begin{equation}
     \div\stressPKLin(\Displacement) = -\vec{f} \;\text{in}\; \domain \quad\text{with}\quad \Displacement = \vec{0} \; \text{on} \; \Gamma_\mathrm{D}  \quad\text{and}\quad \stressPKLin(\Displacement) \cdot \vec{n} = \vec{t} \; \text{on} \; \Gamma_\mathrm{N}\; .
     \label{eq:linear_elasticity}
@@ -229,7 +229,7 @@ The following discusses the patch-local algorithms for flux equilibration \cref{
 \end{algorithm}
 
 \textbf{Flux equilibration} requires the solution of a series of constrained minimisation problems \cref{eq:eqlb_by_local_minimisation}.
-This can be done directly\citep{Ern_FluxEqlb_2015} or by splitting the process into an explicit part followed by an unconstrained minimization \cite[Appendix A]{Bertrand_HHO_2023}. 
+This can be done directly\citep{Ern_FluxEqlb_2015} or by splitting the process into an explicit part followed by an unconstrained minimisation \cite[Appendix A]{Bertrand_HHO_2023}. 
 Restricting this discussion to the second approach, the difference of equilibrated and approximated flux is calculated in two steps:
 \begin{equation}
     \fluxRHi - \hatfunc\fluxHi = \fluxRHziSEi + \fluxRHziSEii\; .

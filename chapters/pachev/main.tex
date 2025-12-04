@@ -18,11 +18,11 @@
 \abstract{This chapter introduces cuDOLFINx, a Python package that extends FEniCSx with GPU-accelerated assembly capabilities.
 The extension enables FEniCSx codes to be accelerated on the GPU with minimal changes and provides an easy way for researchers to experiment with GPU-accelerated partial differential equation solvers. By contrast with previous efforts to enhance FEniCSx with GPU capabilities, cuDOLFINx is designed as a standalone package and does not require major changes to the core components of FEniCSx. Consequently, it has the potential to become a usable part of the FEniCSx ecosystem and a long-term solution to the problem of providing GPU acceleration capabilities in FEniCSx.
 We further present performance benchmarks for representative GPU-accelerated FEniCSx applications on an NVIDIA GH200 GPU.
-Our results indicate that GPU-accelerated assembly routines within cuDOLFINx can be up to 40 times faster than traditional FEniCSx assembly with MPI parallelization on a multi-core CPU node.}
+Our results indicate that GPU-accelerated assembly routines within cuDOLFINx can be up to 40 times faster than traditional FEniCSx assembly with MPI parallelisation on a multi-core CPU node.}
 
 \section{Introduction}
-Graphics processing units (GPUs) provide an alternative means of parallelizing computations compared to traditional clusters of multi-core CPUs. For many applications, GPUs are more energy efficient and have thus revolutionized fields such as machine learning~\citep{navarro2014survey}. Several well-known software packages used for solving partial differential equations (PDEs) have taken steps to provide GPU acceleration capabilities, including PETSc~\citep{MILLS2021102831}, MFEM~\citep{anderson2021mfem}, libCEED~\citep{abdelfattah2021gpu}, and deal.II~\citep{arndt2021deal}.
-However, the GPU acceleration of PDE solvers has yet to become the norm, since other PDE libraries~\citep{baratta2023dolfinx,schoberl2014c++,hecht2012new,moxey2020nektar++,FiredrakeUserManual} lack support for GPU acceleration. Furthermore, even when GPU acceleration is available, it often has limited support and can be difficult to use. Modifying existing code to use GPU parallelism remains a significant challenge~\citep{MILLS2021102831}. GPU programming requires a specialized compiler, memory space, and syntax, such that code must often be largely rewritten to take advantage of GPU acceleration.
+Graphics processing units (GPUs) provide an alternative means of parallelising computations compared to traditional clusters of multi-core CPUs. For many applications, GPUs are more energy efficient and have thus revolutionized fields such as machine learning~\citep{navarro2014survey}. Several well-known software packages used for solving partial differential equations (PDEs) have taken steps to provide GPU acceleration capabilities, including PETSc~\citep{MILLS2021102831}, MFEM~\citep{anderson2021mfem}, libCEED~\citep{abdelfattah2021gpu}, and deal.II~\citep{arndt2021deal}.
+However, the GPU acceleration of PDE solvers has yet to become the norm, since other PDE libraries~\citep{baratta2023dolfinx,schoberl2014c++,hecht2012new,moxey2020nektar++,FiredrakeUserManual} lack support for GPU acceleration. Furthermore, even when GPU acceleration is available, it often has limited support and can be difficult to use. Modifying existing code to use GPU parallelism remains a significant challenge~\citep{MILLS2021102831}. GPU programming requires a specialised compiler, memory space, and syntax, such that code must often be largely rewritten to take advantage of GPU acceleration.
 
 
 A major attraction of FEniCSx~\citep{baratta2023dolfinx} as a tool for solving PDEs with the finite element method is its simple Python interface and automated generation of efficient C code. These features enable the rapid prototyping and development of performant solvers for complicated PDEs. Our goal in developing cuDOLFINx \citep{cudolfinxzenodo} is to enable FEniCSx users to add GPU acceleration to their existing PDE solvers with minimal effort.
@@ -92,7 +92,7 @@ Offloading matrix or vector assembly to a GPU typically results in faster assemb
 
 Below, we show how a simplified FEniCSx code for Newton iteration might be modified to support GPU acceleration.
 Boundary conditions are excluded for brevity; however, complete working examples with boundary conditions are available in the cuDOLFINX source code \citep{cudolfinxzenodo}. Our example equation is a nonlinear version of Poisson's equation with an extra cubic term in $u$.
-We begin by initializing the PETSc data structures needed for assembly and linear algebra.
+We begin by initialising the PETSc data structures needed for assembly and linear algebra.
 \begin{python}
 from petsc4py import PETSc
 use_cuda = True
@@ -125,7 +125,7 @@ if use_cuda:
 else:
   ksp.setOperators(A)
 \end{python}
-Finally, we reach the Newton iteration loop. Note the use of PETSc operations to add the computed Newton update to the solution, instead of vectorized NumPy operations as is common in FEniCSx code.
+Finally, we reach the Newton iteration loop. Note the use of PETSc operations to add the computed Newton update to the solution, instead of vectorised NumPy operations as is common in FEniCSx code.
 This allows the computation to happen on the GPU and is the reason that \pythoninline{u_update.vector} and \pythoninline{u.vector} have to be PETSc CUDA vectors.
 \begin{python}
 for i in range(5):
@@ -265,7 +265,8 @@ Stage & Solver/preconditioner       & Assembly & Solve               & Assembly 
 \caption{Runtime (in seconds) for each stage of the Navier--Stokes solver}
     \label{tab:navier_stokes_results}
 \end{table}
-Overall, the CUDA-accelerated solver averaged 2.07\,s per time step, while the original solver took 7.89\,s per time step. The overall speedup is therefore a factor of three.8${\times}$. While the solution time is dominated by the linear solve for the first stage, assembly comprises over 10\% of the total runtime for both the GPU and CPU codes. 
+Overall, the CUDA-accelerated solver averaged 2.07\,s per time step, while the original solver took 7.89\,s per time step. The overall speedup is therefore a factor of 
+3.8${\times}$. While the solution time is dominated by the linear solve for the first stage, assembly comprises over 10\% of the total runtime for both the GPU and CPU codes. 
 
 We note that, compared to the Poisson example, the assembly speedup for the Navier--Stokes code is lower. We hypothesize this is due to the use of second-order elements for the velocity field. Higher-order elements are known to pose difficulties for the GPU offloading approach used within cuDOLFINx, because the auto-generated GPU kernels can require a large number of registers. This results in a phenomenon known as \textit{register spilling}, in which the GPU kernels are forced to utilize global memory to store some local variables, which degrades performance. Solutions include reworking the generated code to better hide memory transfer latency, potentially by reducing register spillage or minimizing the use of local memory. Another approach is to assemble each element using multiple GPU threads to reduce the required resources per thread. Both of these solutions would require substantial enhancements to FFCx, the form compiler within the FEniCS project. Nevertheless, the speedup obtained for assembly with quadratic elements in this case is still significant.
 

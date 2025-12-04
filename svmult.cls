@@ -667,6 +667,7 @@ passing it to article class \MessageBreak
 % predefined unnumbered headings
 \newcommand{\preface}[1][\prefacename]{\chapter*{#1}\markboth{#1}{#1}}
 \newcommand{\foreword}[1][\forewordname]{\chapter*{#1}\markboth{#1}{#1}}
+\newcommand{\seriesforeword}[1][\seriesforewordname]{\chapter*{#1}\markboth{#1}{#1}}
 \newcommand{\contributors}[1][\contriblistname]{\chapter*{#1}\markboth{#1}{#1}}
 \newcommand{\extrachap}[1]{\chapter*{#1}\markboth{#1}{#1}}
 % same with TOC entry
@@ -694,6 +695,11 @@ passing it to article class \MessageBreak
                        {12\p@}% \p@lus 4\p@ \@minus 4\p@}%
                        {\normalfont\normalsize\upshape
                         \rightskip=\z@ \@plus 8em\pretolerance=10000 }}
+% hpl redefinition, with boldface and smaller spacing (for TCSE6, 4th ed.):
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+                       {-6\p@ \@plus -4\p@ \@minus -4\p@}%
+                       {-0.5em \@plus -0.22em \@minus -0.1em}%
+                       {\normalfont\normalsize\bfseries}}
 \renewcommand\subparagraph{\@startsection{paragraph}{4}{\z@}%
                        {-18\p@}% \p@lus -4\p@ \@minus -4\p@}%
                        {6\p@}% \p@lus 4\p@ \@minus 4\p@}%
@@ -1085,6 +1091,7 @@ passing it to article class \MessageBreak
 \def\exercisename{Exercise}%
 \def\figurename{Fig.}%
 \def\forewordname{Foreword}%
+\def\seriesforewordname{Series Foreword}%
 \def\keywordname{{\bf Key words:}}%
 \def\indexname{Index}%
 \def\lemmaname{Lemma}%
@@ -1334,6 +1341,7 @@ to\z@{\kern0.55\wd0\vrule\@height0.45\ht0\hss}\box0}}}}
 
 \def\tableofcontents{\chapter*{\contentsname\markboth{{\contentsname}}%
                                                     {{\contentsname}}}
+ \vspace{-15mm}
  \def\authcount##1{\setcounter{auco}{##1}\setcounter{@auth}{1}}
  \def\lastand{\ifnum\value{auco}=2\relax
                  \unskip{} \andname\

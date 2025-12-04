@@ -16,12 +16,11 @@
 \maketitle
 
 \abstract{We present a fluid--reduced solid interaction approach suitable for modelling blood flow in a beating left heart. 
-The method uses image-derived model data to construct a suitable boundary motion space enhanced by a reduced solid mechanics wall model to enable adaptive fluid motion. 
 The method combines the efficiency of fluid dynamics models with features from full fluid--solid interaction approaches, uniquely integrating motion data to predict cardiac haemodynamics over a full heart cycle. 
 The approach is presented for a patient-specific left heart model coupled to a lumped circulatory system, showing physiological flow behaviour and pressure--volume relations.}
 
 
-\section*{Introduction}
+\section{Introduction}
 Computational fluid dynamics (CFD) provides a valuable tool to predict blood flow in the cardiovascular system \citep{schwarz2023}. 
 Models of blood flow in the heart have become relevant to predict various cardiovascular conditions, using motion states from imaging \citep{bonini2022-suppl,zingaro2023,garciavillalba2021} or even fully coupled fluid--solid interaction (FSI) models \citep{nordsletten2011-fsi,mccormick2011modelling}. 
 However, prescribed cavity motion reduces the model's ability to adapt under varying loads, and full FSI models are complex, computationally demanding, and difficult to constrain (with uncertain boundary conditions and sparse patient data for reliable geometry reconstruction).
@@ -31,7 +30,7 @@ In this contribution, we show the FrSI method's applicability to a complex patie
 The solver and preconditioning aspects of this model and other fluid dynamics problems under nonlocal boundary conditions have been introduced in \cite{hirschvogel2025-prec}.
 
 
-\section*{Methods}
+\section{Methods}
 The FrSI problem of a 3D left heart model (atrium, ventricle, aortic outflow tract) along with the underlying data sources is depicted in \cref{fig:heart_problem}. 
 In particular, domain and motion data are retrieved from time-resolved dynamic CT, which are subsequently mapped to a finite element mesh to generate a discrete space of modes using POD \citep{rathinam2003}. 
 The model is further coupled to a closed-loop systemic, pulmonary, and coronary circulation system \citep{hirschvogel2017,arthurs2016} to provide physiologically meaningful cardiovascular loads to the 3D model.
@@ -46,7 +45,7 @@ The model is further coupled to a closed-loop systemic, pulmonary, and coronary 
 \textbf{D.} 3D--0D coupled FrSI model of the left heart.}\label{fig:heart_problem}
 \end{figure}
 
-\subsection*{Patient Data Preprocessing }
+\subsection{Patient Data Preprocessing }
 The FrSI approach relies on external data sourced from either some high-dimensional model or patient-specific imaging data. Here, we build a patient-specific model of the left heart by segmenting a dynamic cardiac CT dataset using 3D Slicer \citep{kikinis2014-3dslicer}; see \cref{fig:heart_problem}A. A diastolic frame is subsequently meshed with SimModeler \citep{simmodeler}, and a motion tracking algorithm is used to extract the wall velocities at each frame and map them to the finite element mesh (with a velocity degree-of-freedom space of size $n_{v}$). Thereafter, the wall velocity data for $m=19$ frames is collected into a snapshot matrix $\hat{\boldsymbol{\mathsf{S}}} \in \mathbb{R}^{n_{v} \times m}$, and the eigenvalue problem
 \begin{align}
     (\hat{\boldsymbol{\mathsf{S}}}^{\mathrm{T}} \hat{\boldsymbol{\mathsf{S}}}) \,\boldsymbol{\uppsi}_{i} = \uplambda_{i} \,\boldsymbol{\uppsi}_{i}, \quad i = 1, \hdots, m,\label{eq:rom_eigensolve}
@@ -61,7 +60,7 @@ the first three of which are shown in \cref{fig:heart_problem}B. A suitable Gale
 \end{align}
 then needs to be defined, with $n_{v}^{\mathit{\Omega}}$ as the size of the space of bulk (non-boundary) velocities. In \cref{eq:Vgamma}, POD modes \cref{eq:phi_Phi_frsi} have to be incorporated such that velocity degrees of freedom on $\Gamma_{0}^{\mathrm{f}\text{-}\tilde{\mathrm{s}}}$ are confined to the lower-dimensional subspace, but those associated with the bulk domain remain unconstrained \cite{hirschvogel2024-frsi}. Furthermore, the POD space is decomposed with a partition of unity approach such that each region can exhibit independent kinematics (see \cref{fig:heart_problem}C).
 
-\subsection*{Strong Form Problem Statement}
+\subsection{Strong Form Problem Statement}
 We briefly state the strong problem of FrSI -- fluid dynamics in an ALE reference frame \citep{donea1982,duarte2004} with a reduced structural wall model -- subject to nonlocal flux-dependent tractions at the in- and outflows. The boundary subspace projection is then performed on the discrete system presented in a later section.\\
 
 The incompressible non-conservative ALE Navier--Stokes equations, defining the conservation of linear momentum and mass over the domain $\mathit{\mathit{\Omega}}$ is written as
@@ -109,7 +108,7 @@ subject to the essential boundary condition on $\Gamma_{0}^{\mathrm{f}\text{-}\t
 \end{align}
 
 
-\subsection*{Weak Form and Linearization}
+\subsection{Weak Form and Linearization}
 We now define the continuous weak forms of the strong problem statements suitable for a monolithic finite element implementation in FEniCSx. 
 For this, all integrals are formulated over the respective reference domains, and all gradient operators relate to the undeformed configuration $\mathit{\Omega}_{0}$. 
 The general weak problem can be stated as follows:\\
@@ -163,7 +162,7 @@ The linearizations of the weak forms in \cref{eq:frsi_weakform_v,eq:frsi_weakfor
 
 which are the derivatives in the direction of the velocity, pressure, multiplier, and domain displacement trial functions $\Delta\boldsymbol{v}$, $\Delta p$, $\{\Delta\Lambda\}_{n_{\mathrm{0d}}^{\mathrm{b}}}$, and $\Delta\boldsymbol{d}$, respectively, are computed using symbolic automatic differentiation in FEniCSx, where $D_{\Delta (\bullet)_{j}}$ is the G{\^a}teaux operator with respect to the trial function $\Delta (\bullet)_{j}$. Due to the Dirichlet conditions on the ALE problem, special consideration is needed for the derivative of the ALE residual with respect to the fluid velocity. Due to the nature of how Dirichlet conditions are applied in FEniCSx, this is taken care of after discretization.
 
-\subsection*{Discretization and Solution}
+\subsection{Discretization and Solution}
 The problem is discretized with finite elements of piecewise linear Lagrange polynomials in space and a single-step implicit finite difference scheme in time (one-step $\theta$ scheme, with $\theta\in\;]0; 1]$).
 The projection-based component of the FrSI method requires the reduced solid boundary to be projected to a lower-dimensional subspace spanned by POD modes (see \cref{fig:heart_problem}B depicting the first three modes of this space). This is done by the boundary Galerkin projection operator \cref{eq:Vgamma}.
 At the discrete assembled stage at the current time step, indexed by $n+1$, we seek to find the discrete velocity $\boldsymbol{\mathsf{v}}_{n+1}$, pressure $\boldsymbol{\mathsf{p}}_{n+1}$, 3D--0D coupling multipliers $\boldsymbol{\Lambda}_{n+1}$, and domain displacements $\boldsymbol{\mathsf{d}}_{n+1}$ satisfying
@@ -200,26 +199,33 @@ Within one global Newton iteration, prior to solving \cref{eq:lin_sys_rom_frsi_m
 \end{equation}
 followed by the solution of \cref{eq:lin_sys_rom_frsi_mono}). In \cref{eq:lin_sys_0d}, $\boldsymbol{\mathsf{K}}^{\mathrm{0d}}$ is computed with symbolic differentiation using SymPy \citep{meurer2017-sympy}.
 
-\section*{Results}
-
-\Cref{fig:heart_results} shows the results of a full heart cycle simulation. The physical time of the simulation is $T=1\;\mathrm{s}$, with a time step size of $\Delta t = 0.00125\;\mathrm{s}$, for a total of $N=800$ time steps. The mid-point single-step time integration method was set to be backward Euler, such that $\theta=1$. The 3D computational domain consists of $265,722$ nodes ($1,487,039$ finite elements), and the overall problem size has $1,790,303$ degrees of freedom. The resulting linear system \cref{eq:lin_sys_rom_frsi_mono} was solved with an FGMRES \citep{saad1993} algorithm preconditioned by our recently proposed BGS-S3\texttimes 3 preconditioner \citep{hirschvogel2025-prec}. All the methods are implemented in open-source FEniCSx- \citep{baratta2023dolfinx} and PETSc-based \citep{balay2022-petsc} solver Ambit \citep{hirschvogel2024-ambit}.
 
 \begin{figure}[!htp]
 \centering
-\includegraphics[width=1\textwidth]{chapters/hirschvogel/heart_results.pdf}
+\includegraphics[width=1.0\textwidth]{chapters/hirschvogel/heart_results.pdf}
 
 \caption{Results of a full heart cycle simulation. Adapted from \cite{hirschvogel2025-prec}. \textbf{A.} Left atrial, left ventricular, systemic arterial, right atrial, right ventricular, and pulmonary arterial pressures over time. \textbf{B.} Left atrial, left ventricular, right atrial, right ventricular, and left and right proximal coronary fluxes over time. \textbf{C.} Magnitude of fluid velocity $\boldsymbol{v}$ streamlines on a longitudinal cut through the deformed domain $\mathit{\Omega}$. Note the different scales for the diastolic and systolic snapshots. \textbf{D.} Fluid pressure $p$ plotted on an undeformed reference domain $\tilde{\mathit{\Omega}}_{0}$.}\label{fig:heart_results}
 \end{figure}
 
-\section*{Conclusion}
+\section{Results}
+\vspace{-3mm}
+\Cref{fig:heart_results} shows the results of a full heart cycle simulation. The physical time of the simulation is $T=1\;\mathrm{s}$, with a time step size of $\Delta t = 0.00125\;\mathrm{s}$, for a total of $N=800$ time steps. The mid-point single-step time integration method was set to be backward Euler, such that $\theta=1$. The 3D computational domain consists of $265,722$ nodes ($1,487,039$ finite elements), and the overall problem size has $1,790,303$ degrees of freedom. The resulting linear system \cref{eq:lin_sys_rom_frsi_mono} was solved with an FGMRES \citep{saad1993} algorithm preconditioned by our recently proposed BGS-S3\texttimes 3 preconditioner \citep{hirschvogel2025-prec}. All the methods are implemented in open-source FEniCSx- \citep{baratta2023dolfinx} and PETSc-based \citep{balay2022-petsc} solver Ambit \citep{hirschvogel2024-ambit}.
+\vspace{-3mm}
+
+\section{Conclusion}
+\vspace{-3mm}
 We presented the FrSI method for a patient-specific, large-scale left heart model with a focus on a monolithic implementation in a FEniCSx software environment. The model can represent physiologic quantities throughout a heart cycle and can be used to predict haemodynamics under varying cardiovascular conditions, such as in mitral valve regurgitation and repair.
+\vspace{-3mm}
 
 \section*{Software and Data Availability}
+\vspace{-3mm}
 The results were computed using Ambit \citep{hirschvogel2024-ambit} release version 1.3(see \url{https://github.com/marchirschvogel/ambit}). All data needed to run the model -- namely, the Ambit code and medium (rf1) and fine discretization (rf2, used for generating the results presented here), as well as the Ambit input file -- are available at \url{https://zenodo.org/records/14631793}. Running Ambit requires FEniCSx to be installed (installation instructions at \url{https://github.com/FEniCS/dolfinx}), specifically the DOLFINx development version dating to Git hash \verb\4392bc84f440d7418ec4491a4a827d50720cb7d7\ (28 November 2024). The model might run just as well with newer DOLFINx versions, however, this has not been tested.
 
 \begin{acknowledgement}
+\vspace{-3mm}
 D. Nordsletten acknowledges funding from the Engineering and Physical Sciences Research Council Healthcare Technology Challenge Award (EP/R003866/1) and support from the Wellcome Trust EPSRC Centre of Excellence in Medical Engineering (WT 088641/Z/09/Z) and the NIHR Biomedical Research Centre at Guy's and St. Thomas' NHS Foundation Trust and KCL.    
 \end{acknowledgement}
+\vspace{-6mm}
 
 \bibliographystyle{spbasic}
 % Write the full path of your bibfile relative to book.tex
