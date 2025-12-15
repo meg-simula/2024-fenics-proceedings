@@ -331,7 +331,8 @@ To avoid the direct solution of
     \end{bmatrix}\; ,
     \label{eq:eqs_ws_constrmin}
 \end{equation}
-the equation system resulting from the saddle point problem \cref{eq:eqlb_ws_constrmin}, a Schur complement-based solver, is implemented. The vectors $\vec{u}_{R1}$ and $\vec{u}_{R2}$ denote the degrees of freedom (DOFs) for the rows of the stress tensor.
+the equation system resulting from the saddle point problem in \cref{eq:eqlb_ws_constrmin}, a Schur
+complement-based solver, is implemented. The vectors $\vec{u}_{R1}$ and $\vec{u}_{R2}$ denote the degrees of freedom (DOFs) for the rows of the stress tensor.
 Reusing the Cholesky decomposition of $\mat{A}$, the Schur complement $\mat{S} = \mat{B}_1\,\mat{A}^{-1}\,\transpT{\mat{B}_1} + \mat{B}_2\,\mat{A}^{-1}\,\transpT{\mat{B}_2}$ is calculated. 
 Solving $\mat{S}\cdot\vec{c}=\vec{L}_c$ based on its LU decomposition followed by solving $\mat{A}\cdot\vec{u}_{Ri}=-\mat{B}_i\cdot\vec{c}$ is notably faster than a direct solution of \cref{eq:eqs_ws_constrmin}. 
 This procedure is outlined in \cref{alg:eqlb_ws_patch_level}.
@@ -437,11 +438,11 @@ They are slightly worse for $m=k$.
 \begin{wrapfigure}{r}{0.4\textwidth}
 \centering
 \includegraphics[scale=1.0]{fig_cooks-membrane.pdf}
-\caption{Cooks membrane.}
+\caption{Cook's membrane.}
 \label{fig:cook_definition}
 \end{wrapfigure}
 \textbf{Example 2:} Based on the Poisson equation, the influence of the equilibration order $m$ on the efficiency of the resulting estimate is shown.
-Using the Cooks membrane in \cref{fig:cook_definition}, this analysis is extended to linear elasticity, where the symmetry of the stress tensor is considered in a weak sense.
+Using the Cook's membrane in \cref{fig:cook_definition}, this analysis is extended to linear elasticity, where the symmetry of the stress tensor is considered in a weak sense.
 This analysis considers $\Pi_1=2.333$, $t=0.03$, and adaptive meshes based on a Dörfler marking strategy with $\theta=0.6$.
 Characteristics of the first mesh satisfying $\vert\vert\vert \Displacement - \Displacement_\h \vert\vert\vert \leq 10^{-3}$ are summarised in \cref{fig:cook_results-summary}. Since $\LinPKEqlbH$ exactly fulfils the divergence condition from \cref{def:equilibrated_stress}, $\eta$ reduces to the sum of the $\mathcal{A}$-norm of the stress difference $\LinPKEqlbH - \stressPKLin_\h$ and the norm of asymmetric part of $\LinPKEqlbH$.
 Following \cref{fig:cook_results-summary}, the estimate is clearly dominated by the second part.
@@ -458,7 +459,7 @@ where no weak symmetry is enforced on $\LinPKEqlbH$.
 This yields efficiency indices close to one (see \cref{fig:cook_results-summary}) and, comparing the convergence history in \cref{fig:cook_results-convhist}, yields slightly better results as the guaranteed estimate with $m=k+1$.
 \begin{figure}
     \centering
-    \begin{subfigure}[b]{0.4\textwidth}
+    \begin{subfigure}[b]{0.38\textwidth}
         \begin{tabular}{@{}l|c|c|ccc|l@{}}
             \toprule
             $k$ & $m$ & $n_\mathrm{DOF}$ & $\mathrm{err}$ & $\eta$ & $\eta _\mathrm{as}$ & $\mathrm{i_{eff}}$ \\ \midrule
@@ -476,9 +477,9 @@ This yields efficiency indices close to one (see \cref{fig:cook_results-summary}
         \label{fig:cook_results-summary}
     \end{subfigure}
     \hfill
-    \begin{subfigure}[b]{0.58\textwidth}
+    \begin{subfigure}[b]{0.56\textwidth}
         \centering
-        \includegraphics[scale=1.0]{fig_cook-convhistory.pdf}
+        \includegraphics[scale=0.95]{fig_cook-convhistory.pdf}
         \caption{}
         \label{fig:cook_results-convhist}
     \end{subfigure}
